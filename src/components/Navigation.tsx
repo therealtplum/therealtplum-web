@@ -8,7 +8,8 @@ import ContactEmail from "./ContactEmail";
 
 const navItems = [
   { label: "About", href: "#about-me" },
-  { label: "Craft", href: "#craft" },
+  // Craft nav item is temporarily commented out - uncomment to restore when Craft section is added back
+  // { label: "Craft", href: "#craft" },
   { label: "Ventures", href: "#code" },
   { label: "Curiosities", href: "#curiosities" },
 ];

@@ -43,13 +43,13 @@ export default function ProfessionalBackground() {
     // Create pixel grid
     const pixels: Array<{ x: number; y: number; vx: number; vy: number; color: string }> = [];
     
-    // Initialize some animated pixels
-    for (let i = 0; i < 30; i++) {
+    // Initialize more animated pixels for richer effect
+    for (let i = 0; i < 50; i++) {
       pixels.push({
         x: Math.random() * cols,
         y: Math.random() * rows,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
         color: Math.random() > 0.5 ? "#B8860B" : "#8B7355", // brass or warm brown
       });
     }
@@ -59,11 +59,11 @@ export default function ProfessionalBackground() {
       ctx.fillStyle = "transparent";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw pixelated grid background
-      ctx.fillStyle = "rgba(184, 134, 11, 0.05)"; // subtle brass grid
-      for (let x = 0; x < cols; x += 4) {
-        for (let y = 0; y < rows; y += 4) {
-          if ((x + y) % 8 === 0) {
+      // Draw pixelated grid background with more variation
+      ctx.fillStyle = "rgba(184, 134, 11, 0.08)"; // slightly more visible brass grid
+      for (let x = 0; x < cols; x += 3) {
+        for (let y = 0; y < rows; y += 3) {
+          if ((x + y) % 6 === 0) {
             ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
           }
         }
@@ -107,9 +107,12 @@ export default function ProfessionalBackground() {
       {/* 8-bit animated background */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full opacity-30 dark:opacity-20"
+        className="absolute inset-0 w-full h-full opacity-40 dark:opacity-25"
         style={{ imageRendering: "pixelated" }}
       />
+      
+      {/* Subtle gradient overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cream/20 to-transparent dark:via-charcoal/20 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.h2
@@ -163,11 +166,16 @@ export default function ProfessionalBackground() {
                       transform: "translate(-50%, -50%)",
                     }}
                   >
-                    <div className="bg-brass/20 dark:bg-brass/20 backdrop-blur-sm px-4 py-2 rounded-lg border border-brass/50 dark:border-brass/50">
-                      <span className="font-sans text-sm text-charcoal dark:text-cream whitespace-nowrap">
+                    <motion.div
+                      whileHover={{ scale: 1.1, zIndex: 20 }}
+                      className="group relative bg-gradient-to-br from-brass/30 to-brass/10 dark:from-brass/20 dark:to-brass/10 backdrop-blur-md px-5 py-3 rounded-lg border-2 border-brass/60 dark:border-brass/60 shadow-lg shadow-brass/20 dark:shadow-brass/10 hover:shadow-xl hover:shadow-brass/30 dark:hover:shadow-brass/20 transition-all duration-300"
+                    >
+                      <span className="font-sans text-sm font-medium text-charcoal dark:text-cream whitespace-nowrap relative z-10">
                         {obsession}
                       </span>
-                    </div>
+                      {/* Subtle glow effect on hover */}
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-brass/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </motion.div>
                   </motion.div>
                 );
               })}

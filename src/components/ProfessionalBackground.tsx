@@ -147,10 +147,6 @@ export default function ProfessionalBackground() {
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{
-                      delay: index * 0.1,
-                      duration: 0.5,
-                    }}
                     animate={{
                       x: [baseX, baseX * 1.15, baseX],
                       y: [baseY, baseY * 1.15, baseY],

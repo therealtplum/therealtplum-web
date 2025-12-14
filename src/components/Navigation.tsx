@@ -38,8 +38,8 @@ export default function Navigation() {
             href="/"
             className={`text-2xl transition-colors ${
               scrolled
-                ? "text-charcoal dark:text-cream hover:text-brass dark:hover:text-electric-blue"
-                : "text-cream dark:text-cream hover:text-brass dark:hover:text-electric-blue"
+                ? "text-charcoal dark:text-cream hover:text-brass dark:hover:text-brass"
+                : "text-cream dark:text-cream hover:text-brass dark:hover:text-brass"
             }`}
           >
             <BrandLogo italicizeReal redT />
@@ -51,8 +51,8 @@ export default function Navigation() {
                 href={item.href}
                 className={`brass-underline font-sans text-sm tracking-wider uppercase transition-colors ${
                   scrolled
-                    ? "text-charcoal dark:text-cream hover:text-brass dark:hover:text-electric-blue"
-                    : "text-cream dark:text-cream hover:text-brass dark:hover:text-electric-blue"
+                    ? "text-charcoal dark:text-cream hover:text-brass dark:hover:text-brass"
+                    : "text-cream dark:text-cream hover:text-brass dark:hover:text-brass"
                 }`}
               >
                 {item.label}

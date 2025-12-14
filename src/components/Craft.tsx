@@ -42,7 +42,7 @@ export default function Craft() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="text-center text-cream/80 dark:text-charcoal/80 font-sans text-lg mb-16"
+          className="text-center text-cream/80 dark:text-cream/70 font-sans text-lg mb-16"
         >
           Areas of expertise and professional focus
         </motion.p>
@@ -55,12 +55,12 @@ export default function Craft() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="group relative p-6 bg-cream/10 dark:bg-charcoal/10 backdrop-blur-sm rounded-lg border border-brass/30 dark:border-electric-blue/30 hover:border-brass dark:hover:border-electric-blue transition-all duration-300 hover:scale-105"
+              className="group relative p-6 bg-cream/10 dark:bg-cream/5 backdrop-blur-sm rounded-lg border border-brass/30 dark:border-brass/30 hover:border-brass dark:hover:border-brass transition-all duration-300 hover:scale-105"
             >
               <h3 className="font-serif text-xl mb-2 text-cream dark:text-brass">
                 {item.title}
               </h3>
-              <p className="font-sans text-sm text-cream/90 dark:text-charcoal/90">
+              <p className="font-sans text-sm text-cream/90 dark:text-cream/80">
                 {item.description}
               </p>
             </motion.div>
@@ -72,12 +72,12 @@ export default function Craft() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="mt-16 p-8 bg-cream/5 dark:bg-charcoal/5 rounded-lg border border-brass/20"
+          className="mt-16 p-8 bg-cream/5 dark:bg-cream/5 rounded-lg border border-brass/20 dark:border-brass/20"
         >
           <h3 className="font-serif text-2xl mb-4 text-cream dark:text-brass">
             Philosophy
           </h3>
-          <p className="font-sans text-cream/90 dark:text-charcoal/90 leading-relaxed">
+          <p className="font-sans text-cream/90 dark:text-cream/80 leading-relaxed">
             I approach every project with the mindset of a craftsman: attention to detail,
             respect for the materials (code, data, systems, investments), and a commitment to creating
             something that not only works but endures. Whether it's building businesses,

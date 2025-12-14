@@ -116,7 +116,7 @@ export default function Portfolio() {
                     {project.tech.map((tech, techIndex) => (
                       <span
                         key={techIndex}
-                        className="px-2 py-1 bg-brass/20 dark:bg-electric-blue/20 text-xs font-mono rounded text-charcoal dark:text-cream"
+                        className="px-2 py-1 bg-brass/20 dark:bg-brass/20 text-xs font-mono rounded text-charcoal dark:text-cream"
                       >
                         {tech}
                       </span>
@@ -127,7 +127,7 @@ export default function Portfolio() {
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-brass dark:bg-electric-blue text-cream dark:text-charcoal rounded hover:opacity-80 transition-opacity font-sans text-sm"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-brass dark:bg-brass text-cream dark:text-charcoal rounded hover:opacity-80 transition-opacity font-sans text-sm"
                     >
                       {project.linkType === "website" ? "Visit Site" : project.linkType === "github" ? "View Code" : "View App"}
                       <svg
@@ -165,7 +165,7 @@ export default function Portfolio() {
             href="https://github.com/therealtplum"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-sans text-sm text-charcoal/70 dark:text-cream/70 hover:text-brass dark:hover:text-electric-blue transition-colors"
+            className="inline-flex items-center gap-2 font-sans text-sm text-charcoal/70 dark:text-cream/70 hover:text-brass dark:hover:text-brass transition-colors"
           >
             View GitHub Profile
             <svg

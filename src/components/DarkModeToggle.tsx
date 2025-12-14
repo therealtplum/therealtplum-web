@@ -39,7 +39,7 @@ export default function DarkModeToggle() {
   return (
     <button
       onClick={toggleDarkMode}
-      className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-brass dark:bg-electric-blue flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+      className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-brass dark:bg-brass flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
       aria-label="Toggle dark mode"
     >
       <svg

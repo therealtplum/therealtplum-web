@@ -22,7 +22,7 @@ export default function Hero() {
       {/* Portrait placeholder - replace with actual image */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="relative w-64 h-96 md:w-80 md:h-[32rem]">
-          <div className="absolute inset-0 bg-gradient-to-br from-brass/20 to-electric-blue/10 rounded-lg" />
+          <div className="absolute inset-0 bg-gradient-to-br from-brass/20 to-brass/10 rounded-lg" />
           <div className="relative w-full h-full bg-charcoal/30 dark:bg-cream/10 rounded-lg border-2 border-brass/30 flex items-center justify-center">
             <span className="text-cream/50 text-sm">Portrait Image</span>
           </div>

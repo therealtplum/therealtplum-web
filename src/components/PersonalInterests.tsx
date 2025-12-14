@@ -114,7 +114,7 @@ export default function PersonalInterests() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="group relative p-6 bg-cream/10 dark:bg-charcoal/10 backdrop-blur-sm rounded-lg border border-brass/30 dark:border-electric-blue/30 hover:border-brass dark:hover:border-electric-blue transition-colors"
+              className="group relative p-6 bg-cream/10 dark:bg-charcoal/10 backdrop-blur-sm rounded-lg border border-brass/30 dark:border-brass/30 hover:border-brass dark:hover:border-brass transition-colors"
             >
               <div className="flex-1 relative z-10">
                 <h3 className="font-serif text-xl mb-2 text-cream dark:text-brass">
@@ -124,7 +124,7 @@ export default function PersonalInterests() {
                   {interest.description}
                 </p>
                 <div className="flex flex-col gap-2">
-                  <span className="font-mono text-xs text-brass/70 dark:text-electric-blue/70">
+                  <span className="font-mono text-xs text-brass/70 dark:text-brass/70">
                     {interest.details}
                   </span>
                   {interest.links && (
@@ -135,7 +135,7 @@ export default function PersonalInterests() {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs text-brass dark:text-electric-blue hover:underline font-sans relative z-20"
+                          className="text-xs text-brass dark:text-brass hover:underline font-sans relative z-20"
                         >
                           {link.name}
                         </a>
@@ -147,7 +147,7 @@ export default function PersonalInterests() {
 
               {/* Subtle animation on hover */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-brass/5 to-electric-blue/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                className="absolute inset-0 bg-gradient-to-br from-brass/5 to-brass/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
                 initial={false}
               />
             </motion.div>
@@ -175,7 +175,7 @@ export default function PersonalInterests() {
               href="https://snowbirdcap.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brass dark:text-electric-blue hover:underline"
+              className="text-brass dark:text-brass hover:underline"
             >
               snowbirdcap.com
             </a>

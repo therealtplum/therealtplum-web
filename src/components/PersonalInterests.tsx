@@ -15,8 +15,8 @@ const interests = [
   },
   {
     title: "Wine",
-    description: "LSET Level 1 certified, Level 2 upcoming. Exploring terroir, vintages, and the art of winemaking. Building tools to deepen understanding and share the passion.",
-    details: "LSET L1 • L2 In Progress",
+    description: "WSET Level 1 certified, Level 2 upcoming. Exploring terroir, vintages, and the art of winemaking. Building tools to deepen understanding and share the passion.",
+    details: "WSET L1 • L2 In Progress",
     links: [
       { name: "Wine Quiz", url: "https://wine-quiz.com" },
       { name: "Rhyne Wines", url: "https://rhynewines.com" },

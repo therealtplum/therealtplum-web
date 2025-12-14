@@ -15,9 +15,7 @@ export default function BrandLogo({
     <span className={`font-sans lowercase italic ${className}`}>
       <span>the</span>
       <span>real</span>
-      <span>
-        <span className={redT ? "text-red-600 dark:text-red-400" : ""}>t</span>plum
-      </span>
+      <span className={redT ? "text-red-600 dark:text-red-400" : ""}>tplum</span>
     </span>
   );
 }

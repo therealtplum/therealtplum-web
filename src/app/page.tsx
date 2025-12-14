@@ -20,8 +20,7 @@ export default function HomePage() {
           <span className="lowercase italic">
             <span>the</span>
             <span>real</span>
-            <span className="text-red-600 dark:text-red-400">t</span>
-            <span>plum</span>
+            <span className="text-red-600 dark:text-red-400">tplum</span>
           </span>
           . Built with integrity.
         </p>

@@ -17,8 +17,7 @@ export default function FormattedBrandText({
     <span className={`font-sans lowercase ${baseClass}`}>
       <span>the</span>
       <span className={italicizeReal ? "italic" : ""}>real</span>
-      <span className="text-red-600 dark:text-red-400">t</span>
-      <span>plum</span>
+      <span className="text-red-600 dark:text-red-400">tplum</span>
     </span>
   );
 }

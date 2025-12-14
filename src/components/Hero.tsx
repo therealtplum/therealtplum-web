@@ -18,24 +18,15 @@ export default function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden film-grain">
       {/* Background with subtle particle effect */}
       <div className="absolute inset-0 bg-gradient-to-br from-hunter-green via-navy to-charcoal dark:from-charcoal dark:via-navy dark:to-hunter-green" />
-      
-      {/* Portrait placeholder - replace with actual image */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative w-64 h-96 md:w-80 md:h-[32rem]">
-          <div className="absolute inset-0 bg-gradient-to-br from-brass/20 to-brass/10 rounded-lg" />
-          <div className="relative w-full h-full bg-charcoal/30 dark:bg-cream/10 rounded-lg border-2 border-brass/30 flex items-center justify-center">
-            <span className="text-cream/50 text-sm">Portrait Image</span>
-          </div>
-        </div>
-      </div>
 
       {/* Content overlay */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <h1 className="font-serif text-5xl md:text-7xl mb-8">
           <span className="text-cream">Who </span>
-          <span className="text-cream italic">is</span>
-          <span className="text-cream"> </span>
-          <FormattedBrandText className="text-cream" italicizeReal={false} />
+          <span className="text-cream">is </span>
+          <span className="text-cream italic">
+            <FormattedBrandText className="text-cream" italicizeReal={false} />
+          </span>
           <span className="text-cream">?</span>
         </h1>
         

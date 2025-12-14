@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import FormattedBrandText from "./FormattedBrandText";
 
 const interests = [
@@ -161,29 +162,48 @@ export default function PersonalInterests() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="mt-16 p-8 bg-cream/5 dark:bg-charcoal/5 rounded-lg border border-brass/20"
+          className="mt-16 grid md:grid-cols-2 gap-8 items-center"
         >
-          <h3 className="font-serif text-3xl mb-4 text-cream dark:text-brass">
-            About Me
-          </h3>
-          <p className="font-sans text-cream/90 dark:text-charcoal/90 leading-relaxed text-lg">
-            I'm Thomas Plummer. I build businesses and work in high-frequency trading and finance, with a focus on precision, systems, and disciplined execution.
-          </p>
-          <p className="font-sans text-cream/80 dark:text-charcoal/80 leading-relaxed mt-4">
-            My professional interests span trading, private investments, oil and gas rights, and corporate real estate. I'm particularly drawn to opportunities where structure, incentives, and long-term fundamentals matter. More on my investment work can be found at{" "}
-            <a
-              href="https://snowbirdcap.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-brass dark:text-brass hover:underline"
-            >
-              snowbirdcap.com
-            </a>
-            .
-          </p>
-          <p className="font-sans text-cream/80 dark:text-charcoal/80 leading-relaxed mt-4">
-            Outside of work, you might find me racing sailboats, exploring new wines, or spending time in the field during hunting season. I'm a University of Kansas graduate and lifelong Jayhawks fan. I'm naturally curious, always learning, and usually building something—whether it's software, an investment thesis, or a new venture.
-          </p>
+          {/* Portrait */}
+          <div className="relative w-full aspect-[3/4] max-w-sm mx-auto">
+            <div className="absolute inset-0 bg-gradient-to-br from-brass/20 to-brass/10 rounded-lg" />
+            <div className="relative w-full h-full rounded-lg border-2 border-brass/30 overflow-hidden">
+              <Image
+                src="/TP_portrait.jpg"
+                alt="Thomas Plummer"
+                fill
+                className="object-cover"
+              />
+              {/* Theme-matching filter overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-brass/30 via-transparent to-charcoal/40 mix-blend-overlay" />
+              <div className="absolute inset-0 bg-brass/10 mix-blend-soft-light" />
+            </div>
+          </div>
+
+          {/* About Me Content */}
+          <div className="p-8 bg-cream/5 dark:bg-charcoal/5 rounded-lg border border-brass/20 mx-auto w-full max-w-lg">
+            <h3 className="font-serif text-3xl mb-4 text-cream dark:text-brass">
+              About Me
+            </h3>
+            <p className="font-sans text-cream/90 dark:text-charcoal/90 leading-relaxed text-lg">
+              I'm Thomas Plummer. I build businesses and work in high-frequency trading and finance, with a focus on precision, systems, and disciplined execution.
+            </p>
+            <p className="font-sans text-cream/80 dark:text-charcoal/80 leading-relaxed mt-4">
+              My professional interests span trading, private investments, oil and gas rights, and corporate real estate. I'm particularly drawn to opportunities where structure, incentives, and long-term fundamentals matter. More on my investment work can be found at{" "}
+              <a
+                href="https://snowbirdcap.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brass dark:text-brass hover:underline"
+              >
+                snowbirdcap.com
+              </a>
+              .
+            </p>
+            <p className="font-sans text-cream/80 dark:text-charcoal/80 leading-relaxed mt-4">
+              Outside of work, you might find me racing sailboats, exploring new wines, or spending time in the field during hunting season. I'm a University of Kansas graduate and lifelong Jayhawks fan. I'm naturally curious, always learning, and usually building something—whether it's software, an investment thesis, or a new venture.
+            </p>
+          </div>
         </motion.div>
 
         {/* Echo of hero question */}
@@ -195,7 +215,9 @@ export default function PersonalInterests() {
           className="font-serif text-4xl md:text-6xl text-center mt-16 mb-8"
         >
           <span className="text-cream dark:text-charcoal">That's just a glimpse into who </span>
-          <FormattedBrandText className="text-cream dark:text-charcoal" italicizeReal={false} />
+          <span className="text-cream dark:text-charcoal italic">
+            <FormattedBrandText className="text-cream dark:text-charcoal" italicizeReal={false} />
+          </span>
           <span className="text-cream dark:text-charcoal"> is</span>
         </motion.h2>
       </div>

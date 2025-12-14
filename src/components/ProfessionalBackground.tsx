@@ -19,7 +19,7 @@ const obsessions = [
 export default function ProfessionalBackground() {
   return (
     <section
-      id="about"
+      id="obsessions"
       className="py-24 px-6 bg-cream dark:bg-charcoal min-h-screen"
     >
       <div className="max-w-7xl mx-auto">

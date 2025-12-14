@@ -1,4 +1,4 @@
-# The Real T Plum - Personal Website
+# therealtplum - Personal Website
 
 A personal website that blends "old money Tom Selleck meets humble Elon Musk" — combining classic, refined aesthetics with modern tech minimalism.
 

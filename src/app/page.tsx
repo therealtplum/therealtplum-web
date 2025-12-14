@@ -3,6 +3,7 @@ import ProfessionalBackground from "@/components/ProfessionalBackground";
 import Craft from "@/components/Craft";
 import Portfolio from "@/components/Portfolio";
 import PersonalInterests from "@/components/PersonalInterests";
+import ContactEmail from "@/components/ContactEmail";
 
 export default function HomePage() {
   return (
@@ -26,6 +27,9 @@ export default function HomePage() {
         </p>
         <p className="font-sans text-cream/60 dark:text-charcoal/60 text-xs mt-2">
           Chicago | Austin | Global
+        </p>
+        <p className="font-sans text-cream/70 dark:text-charcoal/70 text-sm mt-4">
+          <ContactEmail displayText="Get in touch" />
         </p>
       </footer>
     </main>

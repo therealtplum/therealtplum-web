@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import BrandLogo from "./BrandLogo";
+import ContactEmail from "./ContactEmail";
 
 const navItems = [
   { label: "About", href: "#about-me" },
@@ -58,6 +59,14 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
+            <ContactEmail
+              displayText="CONTACT"
+              className={`brass-underline font-sans text-sm tracking-wider uppercase transition-colors ${
+                scrolled
+                  ? "text-charcoal dark:text-cream hover:text-brass dark:hover:text-brass"
+                  : "text-cream dark:text-cream hover:text-brass dark:hover:text-brass"
+              }`}
+            />
           </div>
         </div>
       </div>

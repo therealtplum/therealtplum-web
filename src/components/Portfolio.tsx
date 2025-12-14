@@ -17,7 +17,7 @@ const projects: Project[] = [
   {
     title: "Foundry90",
     description: "Educational platform showcasing capstone projects from the Foundry90 program",
-    tech: ["Education", "Web Development"],
+    tech: ["Education", "Rust", "Python"],
     link: "https://foundry90.com/capstones",
     linkType: "website",
     icon: "/f90-icon.png",
@@ -37,6 +37,30 @@ const projects: Project[] = [
     link: "https://snowbirdcap.com",
     linkType: "website",
     icon: "/snowbird-logo.png",
+  },
+  {
+    title: "LowRoller",
+    description: "Turn-based dice game where 3s count as zero. Play head-to-head or against smart bots, build streaks, and climb the leaderboard",
+    tech: ["Swift", "SwiftUI", "iOS"],
+    link: null,
+    linkType: "app",
+    icon: "/lowroller-icon.png",
+  },
+  {
+    title: "Time2Sail",
+    description: "Python package for quick sailing condition summaries across multiple cities. Pulls forecasts from NWS and outputs 1-10 ratings to Slack or email",
+    tech: ["Python", "NWS API", "CLI"],
+    link: "https://github.com/therealtplum/sailing-conditions",
+    linkType: "github",
+    icon: "/time2sail.png",
+  },
+  {
+    title: "Crypto Project",
+    description: "Exploring blockchain technology and cryptocurrency applications. Details coming soon.",
+    tech: ["Blockchain", "Crypto"],
+    link: null,
+    linkType: "github",
+    icon: "/crypto-icon.svg",
   },
 ];
 
@@ -105,7 +129,7 @@ export default function Portfolio() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-brass dark:bg-electric-blue text-cream dark:text-charcoal rounded hover:opacity-80 transition-opacity font-sans text-sm"
                     >
-                      {project.linkType === "website" ? "Visit Site" : "View App"}
+                      {project.linkType === "website" ? "Visit Site" : project.linkType === "github" ? "View Code" : "View App"}
                       <svg
                         className="w-4 h-4"
                         fill="none"

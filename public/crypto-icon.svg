@@ -1,0 +1,8 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Coin/Circle -->
+  <circle cx="40" cy="40" r="30" fill="#B8860B" stroke="#8B4513" stroke-width="2"/>
+  <!-- Bitcoin-style B -->
+  <path d="M 28 25 L 28 55 M 28 25 L 45 25 Q 50 25 50 30 Q 50 35 45 35 L 28 35 M 45 35 Q 50 35 50 40 Q 50 45 45 45 L 28 45 M 28 45 L 45 45 Q 50 45 50 50 Q 50 55 45 55 L 28 55" 
+        stroke="#F5F5DC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
+

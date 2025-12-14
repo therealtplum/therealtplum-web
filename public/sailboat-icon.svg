@@ -1,0 +1,11 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hull -->
+  <path d="M15 55 L65 55 L60 65 L20 65 Z" fill="#8B4513" stroke="#654321" stroke-width="1.5"/>
+  <!-- Sail -->
+  <path d="M40 20 L40 55 L25 55 Z" fill="#F5F5DC" stroke="#D3D3D3" stroke-width="1.5"/>
+  <!-- Mast -->
+  <line x1="40" y1="20" x2="40" y2="55" stroke="#654321" stroke-width="2"/>
+  <!-- Flag -->
+  <path d="M40 20 L50 25 L40 30 Z" fill="#B8860B"/>
+</svg>
+

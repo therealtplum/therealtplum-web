@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyTraveler, initializeDemoData } from "@/lib/db";
+import { verifyTraveler, initializeDemoData } from "@/lib/db-adapter";
 import { createToken } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
@@ -7,7 +7,15 @@ export async function POST(request: NextRequest) {
     // Initialize demo data on first request
     await initializeDemoData();
 
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (error) {
+      return NextResponse.json(
+        { error: "Invalid request body" },
+        { status: 400 }
+      );
+    }
     const { tripId, travelerId, password } = body;
 
     if (!tripId || !travelerId || !password) {

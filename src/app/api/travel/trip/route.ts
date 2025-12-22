@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getTrip, initializeDemoData } from "@/lib/db";
+import { getTrip, initializeDemoData } from "@/lib/db-adapter";
 import { verifyToken } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {

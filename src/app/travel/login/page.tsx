@@ -30,19 +30,35 @@ export default function LoginPage() {
           travelerId: traveler,
           password,
         }),
+        credentials: "include",
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        setError(data.error || "Login failed");
+        // Try to parse error message
+        let errorMessage = "Login failed";
+        try {
+          const data = await response.json();
+          errorMessage = data.error || errorMessage;
+        } catch {
+          // If JSON parsing fails, use status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        setError(errorMessage);
         return;
       }
+
+      const data = await response.json();
 
       // Redirect on success
       router.push("/travel/trip");
     } catch (err) {
-      setError("Network error. Please try again.");
+      // More specific error handling
+      const error = err as Error;
+      if (error.message.includes("Failed to fetch") || error.message.includes("NetworkError")) {
+        setError("Cannot connect to server. Make sure you're on the same network and using the correct URL.");
+      } else {
+        setError(`Network error: ${error.message || "Please try again."}`);
+      }
       console.error("Login error:", err);
     }
   };
@@ -51,10 +67,18 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Trip OS</h1>
+          <h1 className="text-3xl font-bold mb-2 font-sans lowercase">
+            <span className="text-charcoal dark:text-cream">travel</span>
+            <span className="text-red-600 dark:text-red-400">bug</span>
+          </h1>
           <p className="text-charcoal/70 dark:text-cream/70">
             Your travel command center
           </p>
+          {typeof window !== "undefined" && window.location.hostname === "localhost" && (
+            <p className="text-xs text-charcoal/50 dark:text-cream/50 mt-2">
+              On mobile? Use your computer's IP instead of localhost
+            </p>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

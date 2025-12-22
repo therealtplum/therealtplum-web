@@ -2,6 +2,8 @@
 
 import type { Event, Location } from "@/types/trip";
 import { formatTime } from "@/lib/trip-data";
+import { useTimezone } from "@/lib/timezone-context";
+import { useTrip } from "@/lib/trip-context";
 
 interface EventCardProps {
   event: Event;
@@ -19,6 +21,10 @@ const eventTypeColors: Record<string, string> = {
 };
 
 export default function EventCard({ event, location, onClick }: EventCardProps) {
+  const { mode } = useTimezone();
+  const { trip } = useTrip();
+  const timezone = location?.timezone || trip?.baseTimezone || "Asia/Tokyo";
+
   return (
     <button
       onClick={onClick}
@@ -31,7 +37,7 @@ export default function EventCard({ event, location, onClick }: EventCardProps) 
               {event.type}
             </span>
             <span className="text-sm font-medium text-charcoal/70 dark:text-cream/70">
-              {formatTime(event.startTime)}
+              {formatTime(event.startTime, timezone, mode)}
             </span>
           </div>
           <h3 className="font-semibold text-lg mb-1">{event.title}</h3>

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getTrip } from "@/lib/db";
+import { getTrip, initializeDemoData } from "@/lib/db";
 import { verifyToken } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
@@ -14,6 +14,9 @@ export async function GET(request: NextRequest) {
     if (!payload) {
       return NextResponse.json({ error: "Invalid session" }, { status: 401 });
     }
+
+    // Initialize trip data if it doesn't exist
+    await initializeDemoData();
 
     const trip = await getTrip(payload.tripId);
     if (!trip) {

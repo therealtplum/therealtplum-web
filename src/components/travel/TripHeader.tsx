@@ -50,6 +50,7 @@ const tripThemes: Record<string, { primary: string; secondary: string; accent: s
 
 export default function TripHeader({ trip }: TripHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [expandedViews, setExpandedViews] = useState(false);
   const pathname = usePathname();
   const theme = tripThemes[trip.id] || tripThemes.default;
 
@@ -71,6 +72,13 @@ export default function TripHeader({ trip }: TripHeaderProps) {
     setMenuOpen(false);
   }, [pathname]);
 
+  // Auto-expand Views submenu if on a views page
+  useEffect(() => {
+    if (pathname?.startsWith("/travel/trip/views")) {
+      setExpandedViews(true);
+    }
+  }, [pathname]);
+
   const isActive = (href: string) => {
     if (href === "/travel/trip") {
       return pathname === "/travel/trip";
@@ -85,7 +93,7 @@ export default function TripHeader({ trip }: TripHeaderProps) {
 
   return (
     <header
-      className={`sticky top-0 z-40 bg-gradient-to-r ${theme.primary} text-white shadow-lg relative overflow-hidden`}
+      className={`sticky top-0 z-[60] bg-gradient-to-r ${theme.primary} text-white shadow-lg relative overflow-hidden`}
     >
       {/* Cherry Blossom Background Pattern - Only for Japan trips */}
       {trip.id === "japan2026" && (
@@ -257,43 +265,78 @@ export default function TripHeader({ trip }: TripHeaderProps) {
           {menuOpen && (
             <>
               <div
-                className="fixed inset-0 z-40"
+                className="fixed inset-0 z-[55] bg-black/20"
                 onClick={() => setMenuOpen(false)}
               />
-              <nav className="absolute right-0 top-full mt-2 w-64 bg-cream dark:bg-charcoal rounded-lg shadow-xl border border-charcoal/10 dark:border-cream/10 z-50 max-h-[80vh] overflow-y-auto">
+              <nav className="absolute right-0 top-full mt-2 w-64 bg-cream dark:bg-charcoal rounded-lg shadow-xl border border-charcoal/10 dark:border-cream/10 z-[60] max-h-[80vh] overflow-y-auto">
                 <div className="p-2">
                   {navItems.map((item) => (
                     <div key={item.href}>
-                      <Link
-                        href={item.href}
-                        onClick={() => setMenuOpen(false)}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                          isActive(item.href)
-                            ? `${theme.secondary} ${theme.accent} font-semibold`
-                            : "hover:bg-charcoal/5 dark:hover:bg-cream/5 text-charcoal dark:text-cream"
-                        }`}
-                      >
-                        <span className="text-xl">{item.icon}</span>
-                        <span>{item.label}</span>
-                      </Link>
-                      {item.children && (isActive(item.href) || isViewsActive) && (
-                        <div className="ml-4 mt-1 space-y-1">
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              onClick={() => setMenuOpen(false)}
-                              className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
-                                pathname === child.href
-                                  ? `${theme.secondary} ${theme.accent} font-semibold`
-                                  : "hover:bg-charcoal/5 dark:hover:bg-cream/5 text-charcoal/70 dark:text-cream/70"
+                      {item.children ? (
+                        // Views has submenu - make it expandable
+                        <>
+                          <button
+                            onClick={() => setExpandedViews(!expandedViews)}
+                            className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-colors ${
+                              isActive(item.href)
+                                ? `${theme.secondary} ${theme.accent} font-semibold`
+                                : "hover:bg-charcoal/5 dark:hover:bg-cream/5 text-charcoal dark:text-cream"
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="text-xl">{item.icon}</span>
+                              <span>{item.label}</span>
+                            </div>
+                            <svg
+                              className={`w-4 h-4 transition-transform ${
+                                expandedViews ? "rotate-180" : ""
                               }`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
                             >
-                              <span className="text-lg">{child.icon}</span>
-                              <span className="text-sm">{child.label}</span>
-                            </Link>
-                          ))}
-                        </div>
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 9l-7 7-7-7"
+                              />
+                            </svg>
+                          </button>
+                          {expandedViews && (
+                            <div className="ml-4 mt-1 space-y-1">
+                              {item.children.map((child) => (
+                                <Link
+                                  key={child.href}
+                                  href={child.href}
+                                  onClick={() => setMenuOpen(false)}
+                                  className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                                    pathname === child.href
+                                      ? `${theme.secondary} ${theme.accent} font-semibold`
+                                      : "hover:bg-charcoal/5 dark:hover:bg-cream/5 text-charcoal/70 dark:text-cream/70"
+                                  }`}
+                                >
+                                  <span className="text-lg">{child.icon}</span>
+                                  <span className="text-sm">{child.label}</span>
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        // Regular link without submenu
+                        <Link
+                          href={item.href}
+                          onClick={() => setMenuOpen(false)}
+                          className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                            isActive(item.href)
+                              ? `${theme.secondary} ${theme.accent} font-semibold`
+                              : "hover:bg-charcoal/5 dark:hover:bg-cream/5 text-charcoal dark:text-cream"
+                          }`}
+                        >
+                          <span className="text-xl">{item.icon}</span>
+                          <span>{item.label}</span>
+                        </Link>
                       )}
                     </div>
                   ))}

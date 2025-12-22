@@ -28,13 +28,15 @@ export function TripProvider({ children }: { children: ReactNode }) {
             window.location.href = "/travel/login";
             return;
           }
-          throw new Error("Failed to load trip");
+          const errorData = await response.json().catch(() => ({}));
+          console.error("Failed to load trip:", response.status, errorData);
+          throw new Error(`Failed to load trip: ${errorData.error || response.statusText || response.status}`);
         }
 
         const data = await response.json();
         setTrip(data.trip);
 
-        // Save to offline storage
+        // Save to offline storage (always update with latest)
         if (data.trip) {
           const { saveTripOffline } = await import("./offline-db");
           await saveTripOffline(data.trip);

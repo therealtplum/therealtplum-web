@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import type { Trip, Event, Location } from "@/types/trip";
 import { formatTime, resolveEventLocation, getBookingForEvent } from "@/lib/trip-data";
+import { useTimezone } from "@/lib/timezone-context";
 
 interface EventDetailSheetProps {
   event: Event;
@@ -15,6 +16,8 @@ export default function EventDetailSheet({
   trip,
   onClose,
 }: EventDetailSheetProps) {
+  const { mode } = useTimezone();
+  
   useEffect(() => {
     // Prevent body scroll when sheet is open
     document.body.style.overflow = "hidden";
@@ -25,6 +28,7 @@ export default function EventDetailSheet({
 
   const location = resolveEventLocation(event, trip.locations);
   const booking = getBookingForEvent(event, trip.bookings);
+  const timezone = location?.timezone || trip.baseTimezone;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -52,11 +56,11 @@ export default function EventDetailSheet({
           <div>
             <h3 className="text-2xl font-bold mb-2">{event.title}</h3>
             <div className="flex items-center gap-4 text-sm text-charcoal/70 dark:text-cream/70">
-              <span>{formatTime(event.startTime)}</span>
+              <span>{formatTime(event.startTime, timezone, mode)}</span>
               {event.endTime && (
                 <>
                   <span>→</span>
-                  <span>{formatTime(event.endTime)}</span>
+                  <span>{formatTime(event.endTime, timezone, mode)}</span>
                 </>
               )}
             </div>

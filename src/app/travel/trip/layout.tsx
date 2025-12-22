@@ -4,6 +4,7 @@ import BottomNav from "@/components/travel/BottomNav";
 import OfflineIndicator from "@/components/travel/OfflineIndicator";
 import TripHeader from "@/components/travel/TripHeader";
 import { TripProvider, useTrip } from "@/lib/trip-context";
+import { TimezoneProvider } from "@/lib/timezone-context";
 
 function TripLayoutContent({ children }: { children: React.ReactNode }) {
   const { trip, loading } = useTrip();
@@ -42,9 +43,11 @@ export default function TripLayout({
   children: React.ReactNode;
 }) {
   return (
-    <TripProvider>
-      <TripLayoutContent>{children}</TripLayoutContent>
-    </TripProvider>
+    <TimezoneProvider>
+      <TripProvider>
+        <TripLayoutContent>{children}</TripLayoutContent>
+      </TripProvider>
+    </TimezoneProvider>
   );
 }
 

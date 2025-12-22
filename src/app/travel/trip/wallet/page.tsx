@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import type { Booking } from "@/types/trip";
 import { formatDate, formatTime } from "@/lib/trip-data";
 import { useTrip } from "@/lib/trip-context";
+import { useTimezone } from "@/lib/timezone-context";
 
-function BookingCard({ booking, location }: { booking: Booking; location?: { name: string; address?: string } }) {
+function BookingCard({ booking, location, trip }: { booking: Booking; location?: { name: string; address?: string }; trip: { baseTimezone: string } }) {
+  const { mode } = useTimezone();
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = (text: string) => {
@@ -74,11 +76,11 @@ function BookingCard({ booking, location }: { booking: Booking; location?: { nam
       )}
 
       <div className="text-sm text-charcoal/60 dark:text-cream/60 mb-2">
-        {formatDate(booking.startDate)} {formatTime(booking.startDate)}
+        {formatDate(booking.startDate, trip.baseTimezone, mode)} {formatTime(booking.startDate, trip.baseTimezone, mode)}
         {booking.endDate && (
           <>
             {" → "}
-            {formatDate(booking.endDate)} {formatTime(booking.endDate)}
+            {formatDate(booking.endDate, trip.baseTimezone, mode)} {formatTime(booking.endDate, trip.baseTimezone, mode)}
           </>
         )}
       </div>
@@ -187,7 +189,7 @@ export default function WalletPage() {
               (loc) => loc.id === booking.locationId
             );
             return (
-              <BookingCard key={booking.id} booking={booking} location={location} />
+              <BookingCard key={booking.id} booking={booking} location={location} trip={trip} />
             );
           })
         )}
@@ -204,7 +206,7 @@ export default function WalletPage() {
               (loc) => loc.id === booking.locationId
             );
             return (
-              <BookingCard key={booking.id} booking={booking} location={location} />
+              <BookingCard key={booking.id} booking={booking} location={location} trip={trip} />
             );
           })}
         </div>

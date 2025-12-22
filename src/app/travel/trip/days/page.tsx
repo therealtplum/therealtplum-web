@@ -9,11 +9,13 @@ import {
   resolveEventLocation,
 } from "@/lib/trip-data";
 import { useTrip } from "@/lib/trip-context";
+import { useTimezone } from "@/lib/timezone-context";
 import EventCard from "@/components/travel/EventCard";
 import EventDetailSheet from "@/components/travel/EventDetailSheet";
 
 export default function DaysPage() {
   const { trip } = useTrip();
+  const { mode } = useTimezone();
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
@@ -57,7 +59,7 @@ export default function DaysPage() {
                 }`}
               >
                 <div className="text-xs font-medium mb-1">
-                  {formatDate(date)}
+                  {formatDate(date, trip.baseTimezone, mode)}
                 </div>
                 <div className="text-xs opacity-70">
                   {dateEvents.length} {dateEvents.length === 1 ? "event" : "events"}
@@ -75,7 +77,7 @@ export default function DaysPage() {
       {selectedDate && (
         <div>
           <h2 className="text-lg font-semibold mb-4">
-            {formatDate(selectedDate)}
+            {formatDate(selectedDate, trip.baseTimezone, mode)}
           </h2>
 
           {currentDateEvents.length === 0 ? (

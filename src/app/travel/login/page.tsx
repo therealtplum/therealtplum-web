@@ -125,9 +125,6 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-charcoal/60 dark:text-cream/60">
-          <p>Demo: tripId: japan2026, traveler: tom/courtney, password: password123</p>
-        </div>
       </div>
     </div>
   );

@@ -10,12 +10,14 @@ import {
   resolveEventLocation,
 } from "@/lib/trip-data";
 import { useTrip } from "@/lib/trip-context";
+import { useTimezone } from "@/lib/timezone-context";
 import EventCard from "@/components/travel/EventCard";
 import EventDetailSheet from "@/components/travel/EventDetailSheet";
 import WeatherDisplay from "@/components/travel/WeatherDisplay";
 
 export default function TodayPage() {
   const { trip } = useTrip();
+  const { mode } = useTimezone();
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   if (!trip) return null;
@@ -76,7 +78,7 @@ export default function TodayPage() {
           </div>
           <div className="font-semibold">{nextEvent.title}</div>
           <div className="text-sm text-charcoal/70 dark:text-cream/70">
-            {formatTime(nextEvent.startTime)}
+            {formatTime(nextEvent.startTime, trip.baseTimezone, mode)}
           </div>
         </div>
       )}

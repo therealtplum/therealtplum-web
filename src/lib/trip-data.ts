@@ -135,24 +135,57 @@ export function groupEventsByTimeOfDay(events: Event[]): {
 /**
  * Format time for display
  */
-export function formatTime(isoString: string): string {
+export function formatTime(
+  isoString: string,
+  timezone?: string,
+  mode: "user" | "trip" = "trip"
+): string {
   const date = new Date(isoString);
-  return date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  });
+  
+  if (mode === "user") {
+    // Display in user's local timezone
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZoneName: "short",
+    });
+  } else {
+    // Display in trip/location timezone
+    const tz = timezone || "Asia/Tokyo";
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: tz,
+      timeZoneName: "short",
+    });
+  }
 }
 
 /**
  * Format date for display
  */
-export function formatDate(isoString: string): string {
+export function formatDate(
+  isoString: string,
+  timezone?: string,
+  mode: "user" | "trip" = "trip"
+): string {
   const date = new Date(isoString);
-  return date.toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  });
+  
+  if (mode === "user") {
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  } else {
+    const tz = timezone || "Asia/Tokyo";
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      timeZone: tz,
+    });
+  }
 }
 
 /**

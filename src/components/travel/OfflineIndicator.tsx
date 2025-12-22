@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import TimezoneToggle from "./TimezoneToggle";
+import { useTimezone } from "@/lib/timezone-context";
 
 export default function OfflineIndicator() {
   const [isOnline, setIsOnline] = useState(true);
@@ -29,7 +31,7 @@ export default function OfflineIndicator() {
     };
   }, []);
 
-  const formatTime = (date: Date) => {
+  const formatTimeAgo = (date: Date) => {
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const minutes = Math.floor(diff / 60000);
@@ -42,7 +44,7 @@ export default function OfflineIndicator() {
   };
 
   return (
-    <div className="sticky top-[73px] z-30 bg-cream/95 dark:bg-charcoal/95 backdrop-blur-sm border-b border-charcoal/10 dark:border-cream/10">
+    <div className="sticky top-[73px] z-[55] bg-cream/95 dark:bg-charcoal/95 backdrop-blur-sm border-b border-charcoal/10 dark:border-cream/10">
       <div className="flex items-center justify-between px-4 py-2 text-xs">
         <div className="flex items-center gap-2">
           <span className={isOnline ? "text-green-600" : "text-orange-600"}>
@@ -52,11 +54,14 @@ export default function OfflineIndicator() {
             {isOnline ? "Online" : "Offline"}
           </span>
         </div>
-        {lastSync && (
-          <span className="text-charcoal/60 dark:text-cream/60">
-            Last sync: {formatTime(lastSync)}
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          {lastSync && (
+            <span className="text-charcoal/60 dark:text-cream/60">
+              Last sync: {formatTimeAgo(lastSync)}
+            </span>
+          )}
+          <TimezoneToggle />
+        </div>
       </div>
     </div>
   );

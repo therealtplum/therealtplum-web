@@ -1,14 +1,24 @@
 /**
- * Vercel Postgres database adapter
- * Used in production on Vercel
+ * Neon Postgres database adapter
+ * Used in production on Vercel with Neon database
  */
 
-import { sql } from "@vercel/postgres";
+import { neon } from "@neondatabase/serverless";
 import type { Trip } from "@/types/trip";
 import { hashPassword } from "./auth";
 
+// Get Neon SQL client
+const getSql = () => {
+  const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL or POSTGRES_URL environment variable is required");
+  }
+  return neon(databaseUrl);
+};
+
 // Initialize database tables
 export async function initVercelDB() {
+  const sql = getSql();
   try {
     // Create trips table
     await sql`
@@ -31,31 +41,34 @@ export async function initVercelDB() {
       )
     `;
   } catch (error) {
-    console.error("Error initializing Vercel DB:", error);
+    console.error("Error initializing Neon DB:", error);
     // Tables might already exist, which is fine
   }
 }
 
 export async function getTripVercel(tripId: string): Promise<Trip | null> {
   await initVercelDB();
+  const sql = getSql();
   const result = await sql`
     SELECT data FROM trips WHERE id = ${tripId}
   `;
   
-  if (result.rows.length === 0) {
+  if (result.length === 0) {
     return null;
   }
   
-  return result.rows[0].data as Trip;
+  return result[0].data as Trip;
 }
 
 export async function saveTripVercel(trip: Trip): Promise<void> {
   await initVercelDB();
+  const sql = getSql();
+  const tripJson = JSON.stringify(trip);
   await sql`
     INSERT INTO trips (id, data, updated_at)
-    VALUES (${trip.id}, ${JSON.stringify(trip)}::jsonb, NOW())
+    VALUES (${trip.id}, ${tripJson}::jsonb, NOW())
     ON CONFLICT (id) 
-    DO UPDATE SET data = ${JSON.stringify(trip)}::jsonb, updated_at = NOW()
+    DO UPDATE SET data = ${tripJson}::jsonb, updated_at = NOW()
   `;
 }
 
@@ -65,20 +78,21 @@ export async function verifyTravelerVercel(
   password: string
 ): Promise<{ valid: boolean; role?: "traveler" | "admin" }> {
   await initVercelDB();
+  const sql = getSql();
   const result = await sql`
     SELECT password_hash, role FROM travelers
     WHERE trip_id = ${tripId} AND traveler_id = ${travelerId}
   `;
 
-  if (result.rows.length === 0) {
+  if (result.length === 0) {
     return { valid: false };
   }
 
   const { verifyPassword } = await import("./auth");
-  const valid = await verifyPassword(password, result.rows[0].password_hash);
+  const valid = await verifyPassword(password, result[0].password_hash);
 
   return valid
-    ? { valid: true, role: result.rows[0].role as "traveler" | "admin" }
+    ? { valid: true, role: result[0].role as "traveler" | "admin" }
     : { valid: false };
 }
 
@@ -90,6 +104,7 @@ export async function createTravelerVercel(
   role: "traveler" | "admin" = "traveler"
 ): Promise<void> {
   await initVercelDB();
+  const sql = getSql();
   const passwordHash = await hashPassword(password);
 
   await sql`
@@ -114,12 +129,13 @@ export async function initializeDemoDataVercel(): Promise<void> {
   let hasTom = false;
   let hasCourtney = false;
   try {
+    const sql = getSql();
     const travelers = await sql`
       SELECT traveler_id FROM travelers
       WHERE trip_id = 'japan2026'
     `;
-    hasTom = travelers.rows.some((r) => r.traveler_id === "tom");
-    hasCourtney = travelers.rows.some((r) => r.traveler_id === "courtney");
+    hasTom = travelers.some((r: any) => r.traveler_id === "tom");
+    hasCourtney = travelers.some((r: any) => r.traveler_id === "courtney");
   } catch (error) {
     // Table might not exist yet, that's fine
   }

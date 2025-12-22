@@ -4,11 +4,12 @@
 
 import type { Trip } from "@/types/trip";
 
-// Use Vercel DB if we're on Vercel or explicitly set
+// Use Neon/Vercel DB if we're on Vercel or have database URL
 const USE_VERCEL_DB = 
   process.env.VERCEL === "1" || 
   process.env.VERCEL_ENV !== undefined || 
   process.env.USE_VERCEL_DB === "true" ||
+  !!process.env.DATABASE_URL ||
   !!process.env.POSTGRES_URL;
 
 // Re-export functions that work in both environments

@@ -19,6 +19,11 @@ export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  // Hide navigation on travel routes
+  if (pathname?.startsWith("/travel")) {
+    return null;
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);

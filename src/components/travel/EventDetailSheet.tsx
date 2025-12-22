@@ -1,0 +1,178 @@
+"use client";
+
+import { useEffect } from "react";
+import type { Trip, Event, Location } from "@/types/trip";
+import { formatTime, resolveEventLocation, getBookingForEvent } from "@/lib/trip-data";
+
+interface EventDetailSheetProps {
+  event: Event;
+  trip: Trip;
+  onClose: () => void;
+}
+
+export default function EventDetailSheet({
+  event,
+  trip,
+  onClose,
+}: EventDetailSheetProps) {
+  useEffect(() => {
+    // Prevent body scroll when sheet is open
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
+  const location = resolveEventLocation(event, trip.locations);
+  const booking = getBookingForEvent(event, trip.bookings);
+
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end bg-black/50 backdrop-blur-sm"
+      onClick={handleBackdropClick}
+    >
+      <div className="w-full max-h-[90vh] bg-cream dark:bg-charcoal rounded-t-2xl overflow-y-auto">
+        <div className="sticky top-0 bg-cream dark:bg-charcoal border-b border-charcoal/10 dark:border-cream/10 p-4 flex items-center justify-between">
+          <h2 className="text-xl font-bold">Event Details</h2>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-charcoal/10 dark:hover:bg-cream/10 rounded-lg"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="p-4 space-y-4">
+          <div>
+            <h3 className="text-2xl font-bold mb-2">{event.title}</h3>
+            <div className="flex items-center gap-4 text-sm text-charcoal/70 dark:text-cream/70">
+              <span>{formatTime(event.startTime)}</span>
+              {event.endTime && (
+                <>
+                  <span>→</span>
+                  <span>{formatTime(event.endTime)}</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          {location && (
+            <div>
+              <h4 className="font-semibold mb-1">Location</h4>
+              <p className="text-charcoal/70 dark:text-cream/70">
+                {location.name}
+                {location.address && `, ${location.address}`}
+              </p>
+              {location.lat && location.lng && (
+                <button className="mt-2 text-sm text-blue-600 dark:text-blue-400">
+                  Open in Maps →
+                </button>
+              )}
+            </div>
+          )}
+
+          {event.description && (
+            <div>
+              <h4 className="font-semibold mb-1">Description</h4>
+              <p className="text-charcoal/70 dark:text-cream/70">
+                {event.description}
+              </p>
+            </div>
+          )}
+
+          {booking && (
+            <div>
+              <h4 className="font-semibold mb-1">Booking Details</h4>
+              {booking.confirmationCode && (
+                <div className="mb-2">
+                  <span className="text-sm text-charcoal/60 dark:text-cream/60">
+                    Confirmation:{" "}
+                  </span>
+                  <button className="text-sm text-blue-600 dark:text-blue-400 font-mono">
+                    {booking.confirmationCode}
+                  </button>
+                </div>
+              )}
+              {booking.phone && (
+                <div>
+                  <span className="text-sm text-charcoal/60 dark:text-cream/60">
+                    Phone:{" "}
+                  </span>
+                  <a
+                    href={`tel:${booking.phone}`}
+                    className="text-sm text-blue-600 dark:text-blue-400"
+                  >
+                    {booking.phone}
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+
+          {event.attachments && event.attachments.length > 0 && (
+            <div>
+              <h4 className="font-semibold mb-2">Attachments</h4>
+              <div className="space-y-2">
+                {event.attachments.map((attachment) => (
+                  <div
+                    key={attachment.id}
+                    className="p-3 bg-charcoal/5 dark:bg-cream/5 rounded-lg"
+                  >
+                    {attachment.type === "qr" ? (
+                      <div className="text-center">
+                        <div className="text-4xl mb-2">📱</div>
+                        <p className="text-sm text-charcoal/70 dark:text-cream/70">
+                          QR Code
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">{attachment.filename || "Attachment"}</span>
+                        <button className="text-sm text-blue-600 dark:text-blue-400">
+                          View
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {event.notes && event.notes.length > 0 && (
+            <div>
+              <h4 className="font-semibold mb-2">Notes</h4>
+              <div className="space-y-2">
+                {event.notes.map((note) => (
+                  <div
+                    key={note.id}
+                    className="p-3 bg-charcoal/5 dark:bg-cream/5 rounded-lg"
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-medium">
+                        {trip.travelers.find((t) => t.id === note.author)?.name || note.author}
+                      </span>
+                      {note.rating && (
+                        <span className="text-xs">{"⭐".repeat(note.rating)}</span>
+                      )}
+                    </div>
+                    <p className="text-sm text-charcoal/70 dark:text-cream/70">
+                      {note.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+

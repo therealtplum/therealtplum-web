@@ -189,6 +189,39 @@ export function formatDate(
 }
 
 /**
+ * Format date and time together for display
+ */
+export function formatDateTime(
+  isoString: string,
+  timezone?: string,
+  mode: "user" | "trip" = "trip"
+): string {
+  const date = new Date(isoString);
+  
+  if (mode === "user") {
+    return date.toLocaleString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      timeZoneName: "short",
+    });
+  } else {
+    const tz = timezone || "Asia/Tokyo";
+    return date.toLocaleString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: tz,
+      timeZoneName: "short",
+    });
+  }
+}
+
+/**
  * Get all dates in trip range
  */
 export function getTripDates(trip: Trip): string[] {

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import type { Trip, Event, Location } from "@/types/trip";
-import { formatTime, resolveEventLocation, getBookingForEvent } from "@/lib/trip-data";
+import { formatTime, formatDateTime, resolveEventLocation, getBookingForEvent } from "@/lib/trip-data";
 import { useTimezone } from "@/lib/timezone-context";
 
 interface EventDetailSheetProps {
@@ -29,6 +29,14 @@ export default function EventDetailSheet({
   const location = resolveEventLocation(event, trip.locations);
   const booking = getBookingForEvent(event, trip.bookings);
   const timezone = location?.timezone || trip.baseTimezone;
+  
+  const isLogisticsEvent = event.type === "logistics" || event.type === "hotel";
+  const isHotel = booking?.type === "hotel" || event.type === "hotel";
+  const isFlightOrTrain = booking?.type === "flight" || booking?.type === "train";
+  
+  // Use booking dates if available, otherwise use event times
+  const startDateTime = booking?.startDate || event.startTime;
+  const endDateTime = booking?.endDate || event.endTime;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -55,15 +63,51 @@ export default function EventDetailSheet({
         <div className="p-4 space-y-4">
           <div>
             <h3 className="text-2xl font-bold mb-2">{event.title}</h3>
-            <div className="flex items-center gap-4 text-sm text-charcoal/70 dark:text-cream/70">
-              <span>{formatTime(event.startTime, timezone, mode)}</span>
-              {event.endTime && (
-                <>
-                  <span>→</span>
-                  <span>{formatTime(event.endTime, timezone, mode)}</span>
-                </>
-              )}
-            </div>
+            {isLogisticsEvent ? (
+              <div className="space-y-2 text-sm text-charcoal/70 dark:text-cream/70">
+                {isHotel && startDateTime && (
+                  <div>
+                    <span className="font-medium">Check in:</span> {formatDateTime(startDateTime, timezone, mode)}
+                  </div>
+                )}
+                {isHotel && endDateTime && (
+                  <div>
+                    <span className="font-medium">Check out:</span> {formatDateTime(endDateTime, timezone, mode)}
+                  </div>
+                )}
+                {isFlightOrTrain && startDateTime && (
+                  <div>
+                    <span className="font-medium">Depart:</span> {formatDateTime(startDateTime, timezone, mode)}
+                  </div>
+                )}
+                {isFlightOrTrain && endDateTime && (
+                  <div>
+                    <span className="font-medium">Arrive:</span> {formatDateTime(endDateTime, timezone, mode)}
+                  </div>
+                )}
+                {isLogisticsEvent && !isHotel && !isFlightOrTrain && startDateTime && (
+                  <div>
+                    {formatDateTime(startDateTime, timezone, mode)}
+                    {endDateTime && (
+                      <>
+                        {" → "}
+                        {formatDateTime(endDateTime, timezone, mode)}
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-4 text-sm text-charcoal/70 dark:text-cream/70">
+                <span>{formatTime(event.startTime, timezone, mode)}</span>
+                {event.endTime && (
+                  <>
+                    <span>→</span>
+                    <span>{formatTime(event.endTime, timezone, mode)}</span>
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           {location && (
@@ -74,9 +118,15 @@ export default function EventDetailSheet({
                 {location.address && `, ${location.address}`}
               </p>
               {location.lat && location.lng && (
-                <button className="mt-2 text-sm text-blue-600 dark:text-blue-400">
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="mt-2 inline-block text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                >
                   Open in Maps →
-                </button>
+                </a>
               )}
             </div>
           )}

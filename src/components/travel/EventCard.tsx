@@ -1,7 +1,7 @@
 "use client";
 
 import type { Event, Location } from "@/types/trip";
-import { formatTime } from "@/lib/trip-data";
+import { formatTime, formatDateTime, getBookingForEvent } from "@/lib/trip-data";
 import { useTimezone } from "@/lib/timezone-context";
 import { useTrip } from "@/lib/trip-context";
 
@@ -24,6 +24,15 @@ export default function EventCard({ event, location, onClick }: EventCardProps) 
   const { mode } = useTimezone();
   const { trip } = useTrip();
   const timezone = location?.timezone || trip?.baseTimezone || "Asia/Tokyo";
+  
+  const booking = trip ? getBookingForEvent(event, trip.bookings) : undefined;
+  const isLogisticsEvent = event.type === "logistics" || event.type === "hotel";
+  const isHotel = booking?.type === "hotel" || event.type === "hotel";
+  const isFlightOrTrain = booking?.type === "flight" || booking?.type === "train";
+  
+  // Use booking dates if available, otherwise use event times
+  const startDateTime = booking?.startDate || event.startTime;
+  const endDateTime = booking?.endDate || event.endTime;
 
   return (
     <button
@@ -36,15 +45,52 @@ export default function EventCard({ event, location, onClick }: EventCardProps) 
             <span className={`text-xs px-2 py-0.5 rounded ${eventTypeColors[event.type] || eventTypeColors.admin}`}>
               {event.type}
             </span>
-            <span className="text-sm font-medium text-charcoal/70 dark:text-cream/70">
-              {formatTime(event.startTime, timezone, mode)}
-            </span>
+            {!isLogisticsEvent && (
+              <span className="text-sm font-medium text-charcoal/70 dark:text-cream/70">
+                {formatTime(event.startTime, timezone, mode)}
+              </span>
+            )}
           </div>
           <h3 className="font-semibold text-lg mb-1">{event.title}</h3>
           {location && (
             <p className="text-sm text-charcoal/60 dark:text-cream/60">
               {location.name}
             </p>
+          )}
+          {isLogisticsEvent && (
+            <div className="mt-2 space-y-1">
+              {isHotel && startDateTime && (
+                <p className="text-sm text-charcoal/70 dark:text-cream/70">
+                  <span className="font-medium">Check in:</span> {formatDateTime(startDateTime, timezone, mode)}
+                </p>
+              )}
+              {isHotel && endDateTime && (
+                <p className="text-sm text-charcoal/70 dark:text-cream/70">
+                  <span className="font-medium">Check out:</span> {formatDateTime(endDateTime, timezone, mode)}
+                </p>
+              )}
+              {isFlightOrTrain && startDateTime && (
+                <p className="text-sm text-charcoal/70 dark:text-cream/70">
+                  <span className="font-medium">Depart:</span> {formatDateTime(startDateTime, timezone, mode)}
+                </p>
+              )}
+              {isFlightOrTrain && endDateTime && (
+                <p className="text-sm text-charcoal/70 dark:text-cream/70">
+                  <span className="font-medium">Arrive:</span> {formatDateTime(endDateTime, timezone, mode)}
+                </p>
+              )}
+              {isLogisticsEvent && !isHotel && !isFlightOrTrain && startDateTime && (
+                <p className="text-sm text-charcoal/70 dark:text-cream/70">
+                  {formatDateTime(startDateTime, timezone, mode)}
+                  {endDateTime && (
+                    <>
+                      {" → "}
+                      {formatDateTime(endDateTime, timezone, mode)}
+                    </>
+                  )}
+                </p>
+              )}
+            </div>
           )}
         </div>
       </div>

@@ -169,32 +169,25 @@ export default function EventDetailSheet({
             </div>
           )}
 
-          {event.attachments && event.attachments.length > 0 && (
+          {event.attachments && event.attachments.filter(att => att.type !== "qr").length > 0 && (
             <div>
               <h4 className="font-semibold mb-2">Attachments</h4>
               <div className="space-y-2">
-                {event.attachments.map((attachment) => (
-                  <div
-                    key={attachment.id}
-                    className="p-3 bg-charcoal/5 dark:bg-cream/5 rounded-lg"
-                  >
-                    {attachment.type === "qr" ? (
-                      <div className="text-center">
-                        <div className="text-4xl mb-2">📱</div>
-                        <p className="text-sm text-charcoal/70 dark:text-cream/70">
-                          QR Code
-                        </p>
-                      </div>
-                    ) : (
+                {event.attachments
+                  .filter(att => att.type !== "qr")
+                  .map((attachment) => (
+                    <div
+                      key={attachment.id}
+                      className="p-3 bg-charcoal/5 dark:bg-cream/5 rounded-lg"
+                    >
                       <div className="flex items-center justify-between">
                         <span className="text-sm">{attachment.filename || "Attachment"}</span>
                         <button className="text-sm text-blue-600 dark:text-blue-400">
                           View
                         </button>
                       </div>
-                    )}
-                  </div>
-                ))}
+                    </div>
+                  ))}
               </div>
             </div>
           )}

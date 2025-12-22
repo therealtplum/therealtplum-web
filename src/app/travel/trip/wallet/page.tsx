@@ -96,28 +96,19 @@ function BookingCard({ booking, location, trip }: { booking: Booking; location?:
         </div>
       )}
 
-      {booking.attachments && booking.attachments.length > 0 && (
+      {booking.attachments && booking.attachments.filter(att => att.type !== "qr").length > 0 && (
         <div className="mt-3 pt-3 border-t border-charcoal/10 dark:border-cream/10">
           <div className="text-xs font-medium text-charcoal/60 dark:text-cream/60 mb-2">
             Attachments
           </div>
           <div className="space-y-2">
-            {booking.attachments.map((attachment) => (
-              <div
-                key={attachment.id}
-                className="p-3 bg-charcoal/5 dark:bg-cream/5 rounded-lg"
-              >
-                {attachment.type === "qr" ? (
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">📱</div>
-                    <p className="text-sm text-charcoal/70 dark:text-cream/70">
-                      QR Code Available
-                    </p>
-                    <button className="mt-2 text-sm text-blue-600 dark:text-blue-400">
-                      View QR Code
-                    </button>
-                  </div>
-                ) : (
+            {booking.attachments
+              .filter(att => att.type !== "qr")
+              .map((attachment) => (
+                <div
+                  key={attachment.id}
+                  className="p-3 bg-charcoal/5 dark:bg-cream/5 rounded-lg"
+                >
                   <div className="flex items-center justify-between">
                     <span className="text-sm">
                       {attachment.filename || "Attachment"}
@@ -126,9 +117,8 @@ function BookingCard({ booking, location, trip }: { booking: Booking; location?:
                       View
                     </button>
                   </div>
-                )}
-              </div>
-            ))}
+                </div>
+              ))}
           </div>
         </div>
       )}

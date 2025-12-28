@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import FormattedBrandText from "./FormattedBrandText";
+import FlightMap from "./FlightMap";
 
 const interests = [
   {
@@ -58,23 +59,15 @@ const interests = [
       { name: "KU Athletics", url: "https://kuathletics.com" },
     ],
   },
-  {
-    title: "Global Exploration",
-    description: "Traveling to understand different cultures, markets, and ways of building. Over 30 countries visited, each offering new perspectives on how the world works.",
-    details: "30+ Countries • Cultural Immersion",
-    links: [
-      { name: "Travel Map", url: "#" },
-    ],
-  },
 ];
 
 export default function PersonalInterests() {
   return (
     <section
       id="curiosities"
-      className="py-24 px-6 bg-charcoal dark:bg-cream min-h-screen"
+      className="py-24 bg-charcoal dark:bg-cream min-h-screen"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-6">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -82,19 +75,24 @@ export default function PersonalInterests() {
           transition={{ duration: 0.6 }}
           className="font-serif text-5xl md:text-6xl mb-4 text-center text-cream dark:text-brass"
         >
-          The Gentleman's Workshop
+          The Gentleman&apos;s Workshop
         </motion.h2>
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="text-center text-cream/80 dark:text-charcoal/80 font-sans text-lg mb-16"
+          className="text-center text-cream/80 dark:text-charcoal/80 font-sans text-lg mb-8"
         >
           Where analog meets digital
         </motion.p>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      </div>
+      
+      {/* Full-width Flight Map */}
+      <FlightMap />
+      
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
           {interests.map((interest, index) => (
             <motion.div
               key={index}

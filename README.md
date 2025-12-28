@@ -67,3 +67,5 @@ npm start
 - All animations are optimized for performance with `viewport={{ once: true }}` to prevent re-triggering on scroll.
 
 
+
+

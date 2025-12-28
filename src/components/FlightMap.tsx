@@ -1,7 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { motion } from "framer-motion";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Marker,
+  Polyline,
+  InfoWindow,
+} from "@react-google-maps/api";
 import {
   flights,
   airportCoordinates,
@@ -14,60 +21,176 @@ import {
 
 type ViewMode = "dots" | "paths" | "animated";
 
-// Convert lat/lng to SVG coordinates using Robinson-like projection
-function projectToSVG(lat: number, lng: number, width: number, height: number) {
-  // Simple equirectangular projection with adjustments
-  const x = ((lng + 180) / 360) * width;
-  const y = ((90 - lat) / 180) * height;
-  return { x, y };
-}
+const GOOGLE_MAPS_API_KEY = "AIzaSyAqw_TM4KQ3ZUAiGlp02G7bF_B8UH8iAU0";
 
-// Calculate great circle path points for curved flight paths
-function getGreatCirclePath(
-  from: { lat: number; lng: number },
-  to: { lat: number; lng: number },
-  width: number,
-  height: number,
-  numPoints: number = 50
-): string {
-  const points: { x: number; y: number }[] = [];
-  
-  // Handle date line crossing
-  let toLng = to.lng;
-  if (Math.abs(from.lng - to.lng) > 180) {
-    toLng = to.lng + (from.lng > to.lng ? 360 : -360);
-  }
-  
-  for (let i = 0; i <= numPoints; i++) {
-    const t = i / numPoints;
-    
-    // Interpolate latitude and longitude
-    const lat = from.lat + (to.lat - from.lat) * t;
-    let lng = from.lng + (toLng - from.lng) * t;
-    
-    // Normalize longitude
-    while (lng > 180) lng -= 360;
-    while (lng < -180) lng += 360;
-    
-    // Add curve for visual appeal (arc effect)
-    const arcHeight = Math.sin(t * Math.PI) * Math.min(30, Math.abs(from.lng - to.lng) * 0.15);
-    const adjustedLat = lat + arcHeight;
-    
-    const point = projectToSVG(adjustedLat, lng, width, height);
-    points.push(point);
-  }
-  
-  return points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
-}
+// Dark theme map styles for elegant look
+const mapStyles = [
+  { elementType: "geometry", stylers: [{ color: "#1d2c4d" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#8ec3b9" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#1a3646" }] },
+  {
+    featureType: "administrative.country",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#4b6878" }],
+  },
+  {
+    featureType: "administrative.land_parcel",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#64779e" }],
+  },
+  {
+    featureType: "administrative.province",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#4b6878" }],
+  },
+  {
+    featureType: "landscape.man_made",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#334e87" }],
+  },
+  {
+    featureType: "landscape.natural",
+    elementType: "geometry",
+    stylers: [{ color: "#023e58" }],
+  },
+  {
+    featureType: "poi",
+    elementType: "geometry",
+    stylers: [{ color: "#283d6a" }],
+  },
+  {
+    featureType: "poi",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#6f9ba5" }],
+  },
+  {
+    featureType: "poi",
+    elementType: "labels.text.stroke",
+    stylers: [{ color: "#1d2c4d" }],
+  },
+  {
+    featureType: "poi.park",
+    elementType: "geometry.fill",
+    stylers: [{ color: "#023e58" }],
+  },
+  {
+    featureType: "poi.park",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#3C7680" }],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry",
+    stylers: [{ color: "#304a7d" }],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#98a5be" }],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.stroke",
+    stylers: [{ color: "#1d2c4d" }],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "geometry",
+    stylers: [{ color: "#2c6675" }],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#255763" }],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#b0d5ce" }],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "labels.text.stroke",
+    stylers: [{ color: "#023e58" }],
+  },
+  {
+    featureType: "transit",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#98a5be" }],
+  },
+  {
+    featureType: "transit",
+    elementType: "labels.text.stroke",
+    stylers: [{ color: "#1d2c4d" }],
+  },
+  {
+    featureType: "transit.line",
+    elementType: "geometry.fill",
+    stylers: [{ color: "#283d6a" }],
+  },
+  {
+    featureType: "transit.station",
+    elementType: "geometry",
+    stylers: [{ color: "#3a4762" }],
+  },
+  {
+    featureType: "water",
+    elementType: "geometry",
+    stylers: [{ color: "#0e1626" }],
+  },
+  {
+    featureType: "water",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#4e6d70" }],
+  },
+];
+
+const mapContainerStyle = {
+  width: "100%",
+  height: "100%",
+};
+
+const defaultCenter = {
+  lat: 35,
+  lng: -30,
+};
+
+const defaultOptions: google.maps.MapOptions = {
+  styles: mapStyles,
+  disableDefaultUI: true,
+  zoomControl: true,
+  scrollwheel: true,
+  gestureHandling: "greedy",
+  minZoom: 2,
+  maxZoom: 8,
+};
 
 // Get color based on frequency (for heatmap effect)
 function getHeatmapColor(intensity: number, maxIntensity: number): string {
   const ratio = Math.min(intensity / maxIntensity, 1);
   // Gradient from brass (low) to bright gold (high)
   const r = Math.round(184 + (255 - 184) * ratio);
-  const g = Math.round(134 - 34 * ratio);
+  const g = Math.round(134 + (215 - 134) * ratio);
   const b = Math.round(11 + (50 - 11) * ratio);
   return `rgb(${r}, ${g}, ${b})`;
+}
+
+// Create geodesic path between two points
+function createGeodesicPath(
+  from: { lat: number; lng: number },
+  to: { lat: number; lng: number },
+  numPoints: number = 50
+): google.maps.LatLngLiteral[] {
+  const points: google.maps.LatLngLiteral[] = [];
+  
+  for (let i = 0; i <= numPoints; i++) {
+    const t = i / numPoints;
+    const lat = from.lat + (to.lat - from.lat) * t;
+    const lng = from.lng + (to.lng - from.lng) * t;
+    points.push({ lat, lng });
+  }
+  
+  return points;
 }
 
 export default function FlightMap() {
@@ -76,12 +199,14 @@ export default function FlightMap() {
   const [routes, setRoutes] = useState<Route[]>([]);
   const [stats, setStats] = useState<ReturnType<typeof getFlightStats> | null>(null);
   const [animationIndex, setAnimationIndex] = useState(0);
-  const [hoveredAirport, setHoveredAirport] = useState<string | null>(null);
+  const [selectedAirport, setSelectedAirport] = useState<AirportStats | null>(null);
   const [animatedPaths, setAnimatedPaths] = useState<Set<string>>(new Set());
   const animationRef = useRef<NodeJS.Timeout | null>(null);
+  const mapRef = useRef<google.maps.Map | null>(null);
   
-  const SVG_WIDTH = 1200;
-  const SVG_HEIGHT = 600;
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+  });
   
   useEffect(() => {
     setAirports(calculateAirportStats());
@@ -138,7 +263,7 @@ export default function FlightMap() {
   const maxRouteCount = routes[0]?.count || 1;
   
   // Count how many times each route has been animated
-  const getAnimatedRouteCount = (routeKey: string): number => {
+  const getAnimatedRouteCount = useCallback((routeKey: string): number => {
     const sortedFlights = [...flights].sort((a, b) => 
       new Date(a.date).getTime() - new Date(b.date).getTime()
     );
@@ -152,7 +277,63 @@ export default function FlightMap() {
       }
     }
     return count;
-  };
+  }, [animationIndex]);
+  
+  // Get visible airports for animated mode
+  const visibleAirports = useMemo(() => {
+    if (viewMode !== "animated") return airports;
+    
+    const sortedFlights = [...flights].sort((a, b) => 
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+    const visitedCodes = new Set<string>();
+    for (let i = 0; i < animationIndex; i++) {
+      visitedCodes.add(sortedFlights[i].from);
+      visitedCodes.add(sortedFlights[i].to);
+    }
+    
+    return airports.filter(a => visitedCodes.has(a.code));
+  }, [airports, viewMode, animationIndex]);
+  
+  const onMapLoad = useCallback((map: google.maps.Map) => {
+    mapRef.current = map;
+  }, []);
+  
+  // Create custom marker icon
+  const createMarkerIcon = useCallback((visitCount: number, isSelected: boolean): google.maps.Symbol => {
+    const scale = Math.min(6 + (visitCount / maxVisits) * 10, 16);
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: isSelected ? scale * 1.3 : scale,
+      fillColor: isSelected ? "#FFD700" : "#B8860B",
+      fillOpacity: 1,
+      strokeColor: "#FFD700",
+      strokeWeight: isSelected ? 3 : 1.5,
+      strokeOpacity: 0.8,
+    };
+  }, [maxVisits]);
+  
+  if (loadError) {
+    return (
+      <section className="py-16 px-4 bg-charcoal dark:bg-cream">
+        <div className="max-w-7xl mx-auto text-center text-cream dark:text-charcoal">
+          Error loading maps
+        </div>
+      </section>
+    );
+  }
+  
+  if (!isLoaded) {
+    return (
+      <section className="py-16 px-4 bg-charcoal dark:bg-cream">
+        <div className="max-w-7xl mx-auto">
+          <div className="w-full aspect-[2/1] bg-charcoal/50 dark:bg-cream/5 rounded-xl border border-brass/20 flex items-center justify-center">
+            <div className="text-cream/50 dark:text-charcoal/50 font-mono">Loading map...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
   
   return (
     <section className="py-16 px-4 bg-charcoal dark:bg-cream">
@@ -197,186 +378,114 @@ export default function FlightMap() {
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="relative w-full aspect-[2/1] bg-charcoal/50 dark:bg-cream/5 rounded-xl border border-brass/20 overflow-hidden"
+          className="relative w-full aspect-[2/1] rounded-xl border border-brass/20 overflow-hidden"
         >
-          <svg
-            viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
-            className="w-full h-full"
-            preserveAspectRatio="xMidYMid meet"
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={defaultCenter}
+            zoom={2.5}
+            options={defaultOptions}
+            onLoad={onMapLoad}
+            onClick={() => setSelectedAirport(null)}
           >
-            {/* Background gradient */}
-            <defs>
-              <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#1a1a2e" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#16213e" stopOpacity="0.8" />
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              <filter id="pathGlow">
-                <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-            
-            <rect width={SVG_WIDTH} height={SVG_HEIGHT} fill="url(#mapGradient)" />
-            
-            {/* Simplified world map outline */}
-            <WorldMapOutline />
-            
             {/* Flight Paths */}
-            <AnimatePresence>
-              {(viewMode === "paths" || viewMode === "animated") && routes.map((route) => {
-                const fromCoords = airportCoordinates[route.from];
-                const toCoords = airportCoordinates[route.to];
-                if (!fromCoords || !toCoords) return null;
-                
-                const routeKey = `${route.from}-${route.to}`;
-                const isAnimated = viewMode === "animated";
-                const isVisible = !isAnimated || animatedPaths.has(routeKey);
-                const animatedCount = isAnimated ? getAnimatedRouteCount(routeKey) : route.count;
-                
-                if (!isVisible) return null;
-                
-                const path = getGreatCirclePath(fromCoords, toCoords, SVG_WIDTH, SVG_HEIGHT);
-                const intensity = isAnimated ? animatedCount : route.count;
-                const opacity = Math.min(0.3 + (intensity / maxRouteCount) * 0.7, 1);
-                const strokeWidth = Math.min(1 + (intensity / maxRouteCount) * 2, 3);
-                
-                return (
-                  <motion.path
-                    key={routeKey}
-                    d={path}
-                    fill="none"
-                    stroke={isAnimated ? getHeatmapColor(animatedCount, maxRouteCount) : "#B8860B"}
-                    strokeWidth={strokeWidth}
-                    strokeOpacity={opacity}
-                    filter="url(#pathGlow)"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: opacity }}
-                    transition={{ duration: isAnimated ? 0.3 : 0.8, ease: "easeOut" }}
-                  />
-                );
-              })}
-            </AnimatePresence>
-            
-            {/* Airport Dots */}
-            {airports.map((airport) => {
-              const coords = airportCoordinates[airport.code];
-              if (!coords) return null;
+            {(viewMode === "paths" || viewMode === "animated") && routes.map((route) => {
+              const fromCoords = airportCoordinates[route.from];
+              const toCoords = airportCoordinates[route.to];
+              if (!fromCoords || !toCoords) return null;
               
-              const pos = projectToSVG(coords.lat, coords.lng, SVG_WIDTH, SVG_HEIGHT);
-              const size = Math.min(4 + (airport.visitCount / maxVisits) * 8, 12);
-              const isHovered = hoveredAirport === airport.code;
+              const routeKey = `${route.from}-${route.to}`;
+              const isAnimated = viewMode === "animated";
+              const isVisible = !isAnimated || animatedPaths.has(routeKey);
+              const animatedCount = isAnimated ? getAnimatedRouteCount(routeKey) : route.count;
               
-              // For animated mode, only show airports that have been visited
-              if (viewMode === "animated") {
-                const sortedFlights = [...flights].sort((a, b) => 
-                  new Date(a.date).getTime() - new Date(b.date).getTime()
-                );
-                const visitedAirports = new Set<string>();
-                for (let i = 0; i < animationIndex; i++) {
-                  visitedAirports.add(sortedFlights[i].from);
-                  visitedAirports.add(sortedFlights[i].to);
-                }
-                if (!visitedAirports.has(airport.code)) return null;
-              }
+              if (!isVisible) return null;
+              
+              const intensity = isAnimated ? animatedCount : route.count;
+              const opacity = Math.min(0.4 + (intensity / maxRouteCount) * 0.6, 1);
+              const strokeWeight = Math.min(2 + (intensity / maxRouteCount) * 3, 5);
+              const strokeColor = isAnimated 
+                ? getHeatmapColor(animatedCount, maxRouteCount) 
+                : "#B8860B";
               
               return (
-                <g key={airport.code}>
-                  {/* Outer glow */}
-                  <motion.circle
-                    cx={pos.x}
-                    cy={pos.y}
-                    r={size + 2}
-                    fill="#B8860B"
-                    fillOpacity={0.2}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: isHovered ? 1.5 : 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  {/* Main dot */}
-                  <motion.circle
-                    cx={pos.x}
-                    cy={pos.y}
-                    r={size}
-                    fill="#B8860B"
-                    filter="url(#glow)"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    whileHover={{ scale: 1.3 }}
-                    transition={{ duration: 0.4, delay: airport.visitCount * 0.01 }}
-                    onMouseEnter={() => setHoveredAirport(airport.code)}
-                    onMouseLeave={() => setHoveredAirport(null)}
-                    className="cursor-pointer"
-                  />
-                  {/* Label on hover */}
-                  {isHovered && (
-                    <motion.g
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                    >
-                      <rect
-                        x={pos.x - 40}
-                        y={pos.y - 35}
-                        width={80}
-                        height={24}
-                        rx={4}
-                        fill="rgba(0,0,0,0.8)"
-                      />
-                      <text
-                        x={pos.x}
-                        y={pos.y - 18}
-                        textAnchor="middle"
-                        fill="#F5F5DC"
-                        fontSize="10"
-                        fontFamily="monospace"
-                      >
-                        {airport.code} ({airport.visitCount})
-                      </text>
-                    </motion.g>
-                  )}
-                </g>
+                <Polyline
+                  key={routeKey}
+                  path={[
+                    { lat: fromCoords.lat, lng: fromCoords.lng },
+                    { lat: toCoords.lat, lng: toCoords.lng },
+                  ]}
+                  options={{
+                    strokeColor,
+                    strokeOpacity: opacity,
+                    strokeWeight,
+                    geodesic: true,
+                  }}
+                />
               );
             })}
             
-            {/* Animated flight dot */}
-            {viewMode === "animated" && animationIndex > 0 && animationIndex < flights.length && (
-              <AnimatedFlightDot
-                flights={flights}
-                currentIndex={animationIndex - 1}
-                svgWidth={SVG_WIDTH}
-                svgHeight={SVG_HEIGHT}
-              />
+            {/* Airport Markers */}
+            {visibleAirports.map((airport) => {
+              const coords = airportCoordinates[airport.code];
+              if (!coords) return null;
+              
+              const isSelected = selectedAirport?.code === airport.code;
+              
+              return (
+                <Marker
+                  key={airport.code}
+                  position={{ lat: coords.lat, lng: coords.lng }}
+                  icon={createMarkerIcon(airport.visitCount, isSelected)}
+                  onClick={() => setSelectedAirport(airport)}
+                  title={`${airport.code}: ${airport.visitCount} visits`}
+                />
+              );
+            })}
+            
+            {/* Info Window for selected airport */}
+            {selectedAirport && airportCoordinates[selectedAirport.code] && (
+              <InfoWindow
+                position={{
+                  lat: airportCoordinates[selectedAirport.code].lat,
+                  lng: airportCoordinates[selectedAirport.code].lng,
+                }}
+                onCloseClick={() => setSelectedAirport(null)}
+              >
+                <div className="p-2 min-w-[120px]">
+                  <div className="font-bold text-base text-charcoal">
+                    {selectedAirport.code}
+                  </div>
+                  <div className="text-sm text-charcoal/70">
+                    {airportCoordinates[selectedAirport.code].name}
+                  </div>
+                  <div className="text-sm font-mono mt-1 text-brass">
+                    {selectedAirport.visitCount} visits
+                  </div>
+                </div>
+              </InfoWindow>
             )}
-          </svg>
+          </GoogleMap>
           
           {/* Animation progress bar */}
           {viewMode === "animated" && (
-            <div className="absolute bottom-4 left-4 right-4">
-              <div className="bg-charcoal/50 rounded-full h-1 overflow-hidden">
+            <div className="absolute bottom-4 left-4 right-4 z-10">
+              <div className="bg-charcoal/70 rounded-full h-1.5 overflow-hidden backdrop-blur-sm">
                 <motion.div
                   className="h-full bg-brass"
                   style={{ width: `${(animationIndex / flights.length) * 100}%` }}
                 />
               </div>
               <div className="flex justify-between mt-1">
-                <span className="font-mono text-xs text-cream/50 dark:text-charcoal/50">
+                <span className="font-mono text-xs text-cream/80 drop-shadow-md">
                   2015
                 </span>
-                <span className="font-mono text-xs text-cream/50 dark:text-charcoal/50">
+                <span className="font-mono text-xs text-cream/80 drop-shadow-md">
                   {animationIndex < flights.length 
                     ? flights.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[animationIndex]?.date.slice(0, 4)
                     : "2025"}
                 </span>
-                <span className="font-mono text-xs text-cream/50 dark:text-charcoal/50">
+                <span className="font-mono text-xs text-cream/80 drop-shadow-md">
                   {animationIndex} / {flights.length}
                 </span>
               </div>
@@ -413,69 +522,3 @@ export default function FlightMap() {
     </section>
   );
 }
-
-// Animated dot that moves along the current flight path
-function AnimatedFlightDot({
-  flights: flightList,
-  currentIndex,
-  svgWidth,
-  svgHeight,
-}: {
-  flights: typeof flights;
-  currentIndex: number;
-  svgWidth: number;
-  svgHeight: number;
-}) {
-  const sortedFlights = [...flightList].sort((a, b) => 
-    new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
-  const flight = sortedFlights[currentIndex];
-  if (!flight) return null;
-  
-  const fromCoords = airportCoordinates[flight.from];
-  const toCoords = airportCoordinates[flight.to];
-  if (!fromCoords || !toCoords) return null;
-  
-  const from = projectToSVG(fromCoords.lat, fromCoords.lng, svgWidth, svgHeight);
-  const to = projectToSVG(toCoords.lat, toCoords.lng, svgWidth, svgHeight);
-  
-  return (
-    <motion.circle
-      r={4}
-      fill="#FFD700"
-      filter="url(#glow)"
-      initial={{ cx: from.x, cy: from.y }}
-      animate={{ cx: to.x, cy: to.y }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-    />
-  );
-}
-
-// Simplified world map outline (continents only)
-function WorldMapOutline() {
-  return (
-    <g stroke="#B8860B" strokeWidth="0.5" strokeOpacity="0.15" fill="none">
-      {/* North America */}
-      <path d="M 120 120 Q 150 100 200 110 L 280 130 Q 300 150 280 180 L 260 220 Q 240 260 200 280 L 150 260 Q 120 240 100 200 L 90 160 Q 100 130 120 120" />
-      {/* Central America */}
-      <path d="M 200 280 Q 220 300 230 330 L 250 360 Q 240 380 220 370 L 200 340 Q 190 310 200 280" />
-      {/* South America */}
-      <path d="M 250 360 Q 280 380 300 420 L 320 480 Q 310 520 280 540 L 250 520 Q 220 480 230 420 L 250 360" />
-      {/* Europe */}
-      <path d="M 540 100 Q 580 90 620 100 L 660 120 Q 680 140 660 160 L 600 170 Q 560 160 540 140 L 520 120 Q 530 100 540 100" />
-      {/* Africa */}
-      <path d="M 540 200 Q 580 180 620 190 L 660 230 Q 680 280 660 340 L 620 400 Q 580 420 540 400 L 520 340 Q 510 280 520 230 L 540 200" />
-      {/* Asia */}
-      <path d="M 680 80 Q 750 60 850 80 L 950 120 Q 1000 160 980 200 L 920 240 Q 860 260 800 240 L 740 200 Q 700 160 680 120 L 680 80" />
-      {/* India */}
-      <path d="M 780 240 Q 810 260 820 300 L 800 350 Q 770 360 760 330 L 760 280 Q 760 250 780 240" />
-      {/* Southeast Asia */}
-      <path d="M 880 260 Q 920 250 960 270 L 980 320 Q 960 360 920 350 L 880 320 Q 870 290 880 260" />
-      {/* Australia */}
-      <path d="M 920 420 Q 980 400 1040 420 L 1080 460 Q 1080 500 1040 520 L 960 520 Q 920 500 920 460 L 920 420" />
-      {/* Japan */}
-      <path d="M 1000 140 Q 1020 130 1040 150 L 1050 180 Q 1040 200 1020 190 L 1000 160 Q 990 150 1000 140" />
-    </g>
-  );
-}
-

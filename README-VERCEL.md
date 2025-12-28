@@ -77,3 +77,4 @@ The Vercel Postgres database uses two tables:
 - **Tables not created**: The tables are created automatically on first API call
 - **Login fails**: Check that travelers were created (they're auto-created on first login)
 
+

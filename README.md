@@ -66,3 +66,4 @@ npm start
 - GitHub constellation visualization is a placeholder - you can integrate with the GitHub API to show actual contribution data.
 - All animations are optimized for performance with `viewport={{ once: true }}` to prevent re-triggering on scroll.
 
+

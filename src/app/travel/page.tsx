@@ -5,3 +5,4 @@ export default function TravelPage() {
   redirect("/travel/login");
 }
 
+

@@ -40,14 +40,6 @@ const interests = [
     ],
   },
   {
-    title: "F1 Racing",
-    description: "Following the precision, strategy, and engineering excellence of Formula 1. Longtime Team Williams supporter, drawn to their history of innovation and underdog spirit.",
-    details: "Team Williams • Formula 1",
-    links: [
-      { name: "Circuit of the Americas", url: "https://www.circuitoftheamericas.com" },
-    ],
-  },
-  {
     title: "Ceramics",
     description: "Exploring the craft of ceramics, drawn to the patience and precision required. Inspired by the work of Frank Nemick, Adam Russell of Key West Pottery, and Trate Art Kuan.",
     details: "Ceramic Arts",
@@ -65,11 +57,6 @@ const interests = [
       { name: "KU Alumni Association", url: "https://kualumni.org" },
       { name: "KU Athletics", url: "https://kuathletics.com" },
     ],
-  },
-  {
-    title: "Reading",
-    description: "Exploring ideas across technology, finance, history, and philosophy. Books that shape how I think about systems, markets, and building things that last.",
-    details: "Non-Fiction • Systems Thinking",
   },
   {
     title: "Global Exploration",

@@ -13,6 +13,7 @@ export const airportCoordinates: Record<string, { lat: number; lng: number; name
   SFO: { lat: 37.6213, lng: -122.3790, name: "San Francisco", country: "US" },
   OGG: { lat: 20.8986, lng: -156.4305, name: "Maui", country: "US" },
   HNL: { lat: 21.3245, lng: -157.9251, name: "Honolulu", country: "US" },
+  KOA: { lat: 19.7388, lng: -155.9969, name: "Kona (Big Island)", country: "US" },
   AUS: { lat: 30.1975, lng: -97.6664, name: "Austin", country: "US" },
   IAH: { lat: 29.9902, lng: -95.3368, name: "Houston", country: "US" },
   MIA: { lat: 25.7959, lng: -80.2870, name: "Miami", country: "US" },
@@ -38,8 +39,45 @@ export const airportCoordinates: Record<string, { lat: number; lng: number; name
   SLC: { lat: 40.7899, lng: -111.9791, name: "Salt Lake City", country: "US" },
   RDM: { lat: 44.2541, lng: -121.1500, name: "Redmond", country: "US" },
   MDW: { lat: 41.7868, lng: -87.7522, name: "Chicago Midway", country: "US" },
+  TPA: { lat: 27.9755, lng: -82.5332, name: "Tampa", country: "US" },
+  RDU: { lat: 35.8801, lng: -78.7880, name: "Raleigh-Durham", country: "US" },
+  MSN: { lat: 43.1399, lng: -89.3375, name: "Madison", country: "US" },
+  DSM: { lat: 41.5341, lng: -93.6631, name: "Des Moines", country: "US" },
+  OMA: { lat: 41.3032, lng: -95.8941, name: "Omaha", country: "US" },
   
-  // International Airports
+  // Ground/Cruise Destinations
+  CQT: { lat: 44.1461, lng: 9.6439, name: "Cinque Terre", country: "IT" },
+  SZG: { lat: 47.7933, lng: 13.0433, name: "Salzburg", country: "AT" },
+  OGL: { lat: 41.1280, lng: -101.7188, name: "Ogallala", country: "US" },
+  YNP: { lat: 44.4280, lng: -110.5885, name: "Yellowstone", country: "US" },
+  
+  // Alaska/Canada
+  YYJ: { lat: 48.6469, lng: -123.4258, name: "Victoria", country: "CA" },
+  KTN: { lat: 55.3556, lng: -131.7136, name: "Ketchikan", country: "US" },
+  JNU: { lat: 58.3550, lng: -134.5764, name: "Juneau", country: "US" },
+  SGY: { lat: 59.4500, lng: -135.3167, name: "Skagway", country: "US" },
+  
+  // Caribbean
+  HAV: { lat: 22.9892, lng: -82.4092, name: "Havana", country: "CU" },
+  POP: { lat: 19.7579, lng: -70.5700, name: "Puerto Plata", country: "DO" },
+  SJU: { lat: 18.4394, lng: -66.0018, name: "San Juan", country: "PR" },
+  
+  // International Airports - Europe
+  VCE: { lat: 45.5053, lng: 12.3519, name: "Venice", country: "IT" },
+  FCO: { lat: 41.8003, lng: 12.2389, name: "Rome Fiumicino", country: "IT" },
+  MUC: { lat: 48.3538, lng: 11.7861, name: "Munich", country: "DE" },
+  PRG: { lat: 50.1008, lng: 14.2600, name: "Prague", country: "CZ" },
+  BCN: { lat: 41.2974, lng: 2.0833, name: "Barcelona", country: "ES" },
+  DUB: { lat: 53.4264, lng: -6.2499, name: "Dublin", country: "IE" },
+  FRA: { lat: 50.0379, lng: 8.5622, name: "Frankfurt", country: "DE" },
+  ATH: { lat: 37.9364, lng: 23.9445, name: "Athens", country: "GR" },
+  JTR: { lat: 36.3992, lng: 25.4793, name: "Santorini", country: "GR" },
+  RHO: { lat: 36.4054, lng: 28.0862, name: "Rhodes", country: "GR" },
+  HER: { lat: 35.3397, lng: 25.1803, name: "Heraklion (Crete)", country: "GR" },
+  JMK: { lat: 37.4351, lng: 25.3481, name: "Mykonos", country: "GR" },
+  
+  // International Airports - Americas
+  SJO: { lat: 9.9939, lng: -84.2088, name: "San Jose", country: "CR" },
   CUN: { lat: 21.0365, lng: -86.8771, name: "Cancún", country: "MX" },
   LHR: { lat: 51.4700, lng: -0.4543, name: "London Heathrow", country: "GB" },
   LCY: { lat: 51.5053, lng: 0.0553, name: "London City", country: "GB" },
@@ -93,6 +131,95 @@ export interface AirportStats {
 
 // Pre-parsed flight data from the CSV
 export const flights: Flight[] = [
+  // === Undated Historical Trips ===
+  
+  // KC to Tampa and back
+  { date: "2005-01-01", airline: "UAL", flightNumber: "HIST", from: "MCI", to: "TPA", aircraft: "Unknown", canceled: false },
+  { date: "2005-01-05", airline: "UAL", flightNumber: "HIST", from: "TPA", to: "MCI", aircraft: "Unknown", canceled: false },
+  
+  // Austin to Tampa via Atlanta
+  { date: "2006-01-01", airline: "DAL", flightNumber: "HIST", from: "AUS", to: "ATL", aircraft: "Unknown", canceled: false },
+  { date: "2006-01-01", airline: "DAL", flightNumber: "HIST", from: "ATL", to: "TPA", aircraft: "Unknown", canceled: false },
+  { date: "2006-01-05", airline: "DAL", flightNumber: "HIST", from: "TPA", to: "ATL", aircraft: "Unknown", canceled: false },
+  { date: "2006-01-05", airline: "DAL", flightNumber: "HIST", from: "ATL", to: "AUS", aircraft: "Unknown", canceled: false },
+  
+  // Alaska Cruise: Seattle → Victoria → Ketchikan → Juneau → Skagway
+  { date: "2007-06-01", airline: "GND", flightNumber: "CRUISE", from: "SEA", to: "YYJ", aircraft: "Cruise", canceled: false },
+  { date: "2007-06-02", airline: "GND", flightNumber: "CRUISE", from: "YYJ", to: "KTN", aircraft: "Cruise", canceled: false },
+  { date: "2007-06-04", airline: "GND", flightNumber: "CRUISE", from: "KTN", to: "JNU", aircraft: "Cruise", canceled: false },
+  { date: "2007-06-05", airline: "GND", flightNumber: "CRUISE", from: "JNU", to: "SGY", aircraft: "Cruise", canceled: false },
+  { date: "2007-06-06", airline: "GND", flightNumber: "CRUISE", from: "SGY", to: "SEA", aircraft: "Cruise", canceled: false },
+  
+  // Caribbean Cruise: FLL → Havana → Puerto Plata → San Juan → Sint Maarten
+  { date: "2007-12-01", airline: "GND", flightNumber: "CRUISE", from: "FLL", to: "HAV", aircraft: "Cruise", canceled: false },
+  { date: "2007-12-03", airline: "GND", flightNumber: "CRUISE", from: "HAV", to: "POP", aircraft: "Cruise", canceled: false },
+  { date: "2007-12-05", airline: "GND", flightNumber: "CRUISE", from: "POP", to: "SJU", aircraft: "Cruise", canceled: false },
+  { date: "2007-12-06", airline: "GND", flightNumber: "CRUISE", from: "SJU", to: "SXM", aircraft: "Cruise", canceled: false },
+  { date: "2007-12-07", airline: "GND", flightNumber: "CRUISE", from: "SXM", to: "FLL", aircraft: "Cruise", canceled: false },
+  
+  // KC → Raleigh → Madison → KC
+  { date: "2006-06-01", airline: "UAL", flightNumber: "HIST", from: "MCI", to: "RDU", aircraft: "Unknown", canceled: false },
+  { date: "2006-06-03", airline: "UAL", flightNumber: "HIST", from: "RDU", to: "MSN", aircraft: "Unknown", canceled: false },
+  { date: "2006-06-05", airline: "UAL", flightNumber: "HIST", from: "MSN", to: "MCI", aircraft: "Unknown", canceled: false },
+  
+  // Road trip dots (Midwest visits)
+  { date: "2004-01-01", airline: "GND", flightNumber: "ROAD", from: "MCI", to: "DSM", aircraft: "Car", canceled: false },
+  { date: "2004-01-02", airline: "GND", flightNumber: "ROAD", from: "DSM", to: "OMA", aircraft: "Car", canceled: false },
+  { date: "2004-06-01", airline: "GND", flightNumber: "ROAD", from: "DEN", to: "OGL", aircraft: "Car", canceled: false },
+  { date: "2004-06-02", airline: "GND", flightNumber: "ROAD", from: "OGL", to: "YNP", aircraft: "Car", canceled: false },
+  
+  // Big Island Hawaii
+  { date: "2005-06-01", airline: "HAL", flightNumber: "HIST", from: "HNL", to: "KOA", aircraft: "Unknown", canceled: false },
+  { date: "2005-06-05", airline: "HAL", flightNumber: "HIST", from: "KOA", to: "HNL", aircraft: "Unknown", canceled: false },
+  
+  // === 2008 Costa Rica Trip (Summer) ===
+  { date: "2008-06-15", airline: "UAL", flightNumber: "HIST", from: "ICT", to: "IAH", aircraft: "Unknown", canceled: false },
+  { date: "2008-06-15", airline: "UAL", flightNumber: "HIST", from: "IAH", to: "SJO", aircraft: "Unknown", canceled: false },
+  { date: "2008-06-29", airline: "UAL", flightNumber: "HIST", from: "SJO", to: "IAH", aircraft: "Unknown", canceled: false },
+  { date: "2008-06-29", airline: "UAL", flightNumber: "HIST", from: "IAH", to: "ICT", aircraft: "Unknown", canceled: false },
+  
+  // === 2009 Greece Trip (Summer, ~3 weeks) ===
+  { date: "2009-06-10", airline: "UAL", flightNumber: "HIST", from: "ICT", to: "DEN", aircraft: "Unknown", canceled: false },
+  { date: "2009-06-10", airline: "UAL", flightNumber: "HIST", from: "DEN", to: "FRA", aircraft: "Unknown", canceled: false },
+  { date: "2009-06-11", airline: "LH", flightNumber: "HIST", from: "FRA", to: "ATH", aircraft: "Unknown", canceled: false },
+  { date: "2009-06-14", airline: "A3", flightNumber: "HIST", from: "ATH", to: "JTR", aircraft: "Unknown", canceled: false },
+  { date: "2009-06-17", airline: "A3", flightNumber: "HIST", from: "JTR", to: "RHO", aircraft: "Unknown", canceled: false },
+  { date: "2009-06-20", airline: "A3", flightNumber: "HIST", from: "RHO", to: "HER", aircraft: "Unknown", canceled: false },
+  // Kusadasi via ferry from Greek islands - no flight
+  { date: "2009-06-26", airline: "A3", flightNumber: "HIST", from: "HER", to: "JMK", aircraft: "Unknown", canceled: false },
+  { date: "2009-06-28", airline: "A3", flightNumber: "HIST", from: "JMK", to: "ATH", aircraft: "Unknown", canceled: false },
+  { date: "2009-06-30", airline: "LH", flightNumber: "HIST", from: "ATH", to: "FRA", aircraft: "Unknown", canceled: false },
+  { date: "2009-07-01", airline: "UAL", flightNumber: "HIST", from: "FRA", to: "DEN", aircraft: "Unknown", canceled: false },
+  { date: "2009-07-01", airline: "UAL", flightNumber: "HIST", from: "DEN", to: "ICT", aircraft: "Unknown", canceled: false },
+  
+  // === 2012 Europe Trip (May-August) ===
+  // KC to Venice (May 13)
+  { date: "2012-05-13", airline: "UAL", flightNumber: "HIST", from: "MCI", to: "ORD", aircraft: "Unknown", canceled: false },
+  { date: "2012-05-13", airline: "UAL", flightNumber: "HIST", from: "ORD", to: "FRA", aircraft: "Unknown", canceled: false },
+  { date: "2012-05-14", airline: "LH", flightNumber: "HIST", from: "FRA", to: "VCE", aircraft: "Unknown", canceled: false },
+  // Cinque Terre (train from Venice)
+  { date: "2012-05-20", airline: "GND", flightNumber: "TRAIN", from: "VCE", to: "CQT", aircraft: "Train", canceled: false },
+  { date: "2012-05-25", airline: "GND", flightNumber: "TRAIN", from: "CQT", to: "VCE", aircraft: "Train", canceled: false },
+  // Venice to Rome (early June)
+  { date: "2012-06-05", airline: "AZ", flightNumber: "HIST", from: "VCE", to: "FCO", aircraft: "Unknown", canceled: false },
+  { date: "2012-06-10", airline: "AZ", flightNumber: "HIST", from: "FCO", to: "VCE", aircraft: "Unknown", canceled: false },
+  // July backpacking: Munich -> Salzburg -> Prague -> Amsterdam -> Barcelona -> Dublin -> KC
+  { date: "2012-07-10", airline: "VY", flightNumber: "HIST", from: "VCE", to: "MUC", aircraft: "Unknown", canceled: false },
+  // Salzburg (train from Munich)
+  { date: "2012-07-12", airline: "GND", flightNumber: "TRAIN", from: "MUC", to: "SZG", aircraft: "Train", canceled: false },
+  { date: "2012-07-16", airline: "GND", flightNumber: "TRAIN", from: "SZG", to: "MUC", aircraft: "Train", canceled: false },
+  { date: "2012-07-18", airline: "FR", flightNumber: "HIST", from: "MUC", to: "PRG", aircraft: "Unknown", canceled: false },
+  { date: "2012-07-24", airline: "FR", flightNumber: "HIST", from: "PRG", to: "AMS", aircraft: "Unknown", canceled: false },
+  { date: "2012-07-30", airline: "VY", flightNumber: "HIST", from: "AMS", to: "BCN", aircraft: "Unknown", canceled: false },
+  { date: "2012-08-06", airline: "FR", flightNumber: "HIST", from: "BCN", to: "DUB", aircraft: "Unknown", canceled: false },
+  { date: "2012-08-20", airline: "UAL", flightNumber: "HIST", from: "DUB", to: "ORD", aircraft: "Unknown", canceled: false },
+  { date: "2012-08-20", airline: "UAL", flightNumber: "HIST", from: "ORD", to: "MCI", aircraft: "Unknown", canceled: false },
+  
+  // === 2013 Vegas Trip (August) ===
+  { date: "2013-08-15", airline: "UAL", flightNumber: "HIST", from: "MCI", to: "LAS", aircraft: "Unknown", canceled: false },
+  { date: "2013-08-18", airline: "UAL", flightNumber: "HIST", from: "LAS", to: "MCI", aircraft: "Unknown", canceled: false },
+  
+  // === Flighty-tracked flights start here (2015+) ===
   { date: "2015-06-06", airline: "UAL", flightNumber: "5494", from: "MCI", to: "ORD", aircraft: "Embraer 175", canceled: false },
   { date: "2015-06-09", airline: "UAL", flightNumber: "5911", from: "ORD", to: "MCI", aircraft: "Embraer RJ145", canceled: false },
   { date: "2015-07-30", airline: "UAL", flightNumber: "5491", from: "MCI", to: "ORD", aircraft: "Embraer 175", canceled: false },
@@ -436,7 +563,7 @@ export function getFlightStats() {
     uniqueCountries: countries.length,
     mostVisitedAirport: airports[0],
     busiestRoute: routes[0],
-    yearsOfTravel: new Date().getFullYear() - 2015,
+    yearsOfTravel: new Date().getFullYear() - 2004,
     uniqueAircraftTypes: aircraftTypes.length,
     uniqueAirlines: airlines.length,
     uniqueRoutes: routes.length,

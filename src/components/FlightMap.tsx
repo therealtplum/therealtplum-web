@@ -348,8 +348,15 @@ export default function FlightMap() {
           <h2 className="font-serif text-4xl md:text-5xl text-cream dark:text-brass mb-2">
             Global Exploration
           </h2>
-          <p className="font-sans text-cream/70 dark:text-charcoal/70">
-            {stats?.totalFlights || 0} flights across {stats?.uniqueAirports || 0} airports in {stats?.uniqueCountries || 0} countries
+          <p className="font-sans text-cream/70 dark:text-charcoal/70 text-lg">
+            {stats?.totalFlights || 0} flights{" "}
+            <span className="text-brass/60">|</span>{" "}
+            {stats?.uniqueAirports || 0} destinations{" "}
+            <span className="text-brass/60">|</span>{" "}
+            {stats?.uniqueCountries || 0} countries
+          </p>
+          <p className="font-mono text-sm text-cream/50 dark:text-charcoal/50 mt-1 italic">
+            so far...
           </p>
         </motion.div>
         
@@ -452,16 +459,24 @@ export default function FlightMap() {
                 }}
                 onCloseClick={() => setSelectedAirport(null)}
               >
-                <div className="p-2 min-w-[120px]">
+                <div className="p-2 min-w-[140px]">
                   <div className="font-bold text-base text-charcoal">
-                    {selectedAirport.code}
-                  </div>
-                  <div className="text-sm text-charcoal/70">
                     {airportCoordinates[selectedAirport.code].name}
                   </div>
-                  <div className="text-sm font-mono mt-1 text-brass">
-                    {selectedAirport.visitCount} visits
+                  <div className="text-xs text-charcoal/60 uppercase tracking-wide">
+                    {selectedAirport.code} · {airportCoordinates[selectedAirport.code].country}
                   </div>
+                  <div className="text-sm font-mono mt-1 text-amber-700">
+                    {selectedAirport.visitCount} {selectedAirport.visitCount === 1 ? 'visit' : 'visits'}
+                  </div>
+                  <a
+                    href={`https://wikivoyage.org/wiki/${encodeURIComponent(airportCoordinates[selectedAirport.code].name.replace(/ /g, '_'))}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-2 text-xs text-blue-600 hover:text-blue-800 hover:underline"
+                  >
+                    Travel guide →
+                  </a>
                 </div>
               </InfoWindow>
             )}
@@ -476,15 +491,7 @@ export default function FlightMap() {
                   style={{ width: `${(animationIndex / flights.length) * 100}%` }}
                 />
               </div>
-              <div className="flex justify-between mt-1">
-                <span className="font-mono text-xs text-cream/80 drop-shadow-md">
-                  2015
-                </span>
-                <span className="font-mono text-xs text-cream/80 drop-shadow-md">
-                  {animationIndex < flights.length 
-                    ? flights.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[animationIndex]?.date.slice(0, 4)
-                    : "2025"}
-                </span>
+              <div className="flex justify-end mt-1">
                 <span className="font-mono text-xs text-cream/80 drop-shadow-md">
                   {animationIndex} / {flights.length}
                 </span>

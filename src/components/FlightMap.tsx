@@ -21,7 +21,7 @@ import {
 
 type ViewMode = "dots" | "paths" | "animated";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyAqw_TM4KQ3ZUAiGlp02G7bF_B8UH8iAU0";
+const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
 
 // Dark theme map styles for elegant look
 const mapStyles = [

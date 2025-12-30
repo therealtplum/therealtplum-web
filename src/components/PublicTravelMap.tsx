@@ -109,12 +109,22 @@ export default function PublicTravelMap() {
             so far...
           </p>
         </div>
-        <a
-          href="/travel/map"
-          className="font-mono text-xs tracking-wide text-brass hover:underline"
-        >
-          View full map →
-        </a>
+        <div className="flex flex-col items-start md:items-end gap-2">
+          <a
+            href="/travel"
+            className="font-sans text-sm lowercase italic text-cream/90 dark:text-charcoal/90 hover:text-cream dark:hover:text-charcoal transition-colors"
+          >
+            <span>travel</span>
+            <span className="text-red-500 dark:text-red-400">bug</span>
+            <span className="text-brass ml-1">→</span>
+          </a>
+          <a
+            href="/travel/map"
+            className="font-mono text-xs tracking-wide text-brass hover:underline"
+          >
+            View full map →
+          </a>
+        </div>
       </motion.div>
 
       <div className="relative w-full aspect-[2/1] rounded-xl border border-brass/20 overflow-hidden">

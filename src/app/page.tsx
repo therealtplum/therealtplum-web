@@ -1,5 +1,4 @@
 import Hero from "@/components/Hero";
-import ProfessionalSocial from "@/components/ProfessionalSocial";
 import ProfessionalBackground from "@/components/ProfessionalBackground";
 // Craft section is temporarily commented out
 // To restore: uncomment the import below and the <Craft /> component in the JSX
@@ -12,7 +11,6 @@ export default function HomePage() {
   return (
     <main className="relative">
       <Hero />
-      <ProfessionalSocial />
       <ProfessionalBackground />
       {/* Craft section is temporarily commented out - uncomment to restore */}
       {/* <Craft /> */}

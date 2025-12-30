@@ -15,6 +15,12 @@ const obsessions = [
   "Prediction Markets",
   "Emerging Markets",
   "Crypto",
+  "Human-AI Collaboration",
+  "Autonomous Systems",
+  "Energy Innovation",
+  "Biotech & Longevity",
+  "Sports Strategy",
+  "Travel Optimization",
 ];
 
 export default function ProfessionalBackground() {

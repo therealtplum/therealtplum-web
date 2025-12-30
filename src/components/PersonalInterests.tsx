@@ -183,10 +183,10 @@ export default function PersonalInterests() {
               About Me
             </h3>
             <p className="font-sans text-cream/90 dark:text-charcoal/90 leading-relaxed text-lg">
-              I'm Thomas Plummer. I build in high-stakes environments—markets, software, and operations—where speed matters and correctness matters.
+              I'm Thomas Plummer. I build in high-stakes environments—markets, software, and operations—where speed, scale and correctness matters.
             </p>
             <p className="font-sans text-cream/80 dark:text-charcoal/80 leading-relaxed mt-4">
-              I’m drawn to opportunities where structure, incentives, and long-horizon fundamentals matter. I like crisp problem statements, fast iteration, and teams that take pride in craft. More on my investment work can be found at{" "}
+              I’m drawn to conversations about structure, opportunities, and long-horizon fundamentals. I like crisp problem solving, fast iteration, and teams that take pride in craft. More on my investment work can be found at{" "}
               <a
                 href="https://snowbirdcap.com"
                 target="_blank"

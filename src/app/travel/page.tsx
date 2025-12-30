@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
 export default function TravelPage() {
-  // For now, redirect to login - later this will be the landing page
-  redirect("/travel/login");
+  // Auth is handled by middleware - redirect authenticated users to trip view
+  redirect("/travel/trip");
 }
 
 

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { auth0 } from '@/lib/auth0'
 
 export async function middleware(request: NextRequest) {
-  // Let Auth0 handle its own routes first
+  // Let Auth0 handle its own routes
   const authResponse = await auth0.middleware(request)
 
   // For /travel routes (except public map), check authentication
@@ -13,7 +13,8 @@ export async function middleware(request: NextRequest) {
       return authResponse
     }
 
-    const session = await auth0.getSession()
+    // Get session from the auth response
+    const session = await auth0.getSession(request)
     if (!session) {
       // Redirect to Auth0 login
       const loginUrl = new URL('/auth/login', request.url)

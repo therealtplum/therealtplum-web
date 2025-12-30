@@ -24,8 +24,8 @@ export function TripProvider({ children }: { children: ReactNode }) {
 
         if (!response.ok) {
           if (response.status === 401) {
-            // Redirect to login
-            window.location.href = "/travel/login";
+            // Redirect to Auth0 login
+            window.location.href = "/auth/login?returnTo=/travel/trip";
             return;
           }
           const errorData = await response.json().catch(() => ({}));

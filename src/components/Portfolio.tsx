@@ -55,9 +55,9 @@ const projects: Project[] = [
     icon: "/time2sail.png",
   },
   {
-    title: "Crypto Project",
-    description: "Exploring blockchain technology and cryptocurrency applications. Details coming soon.",
-    tech: ["Blockchain", "Crypto"],
+    title: "Crypto Systems",
+    description: "Ongoing work exploring market structure, data pipelines, and building blocks for crypto-native products.",
+    tech: ["Market Structure", "Data", "Crypto"],
     link: null,
     linkType: "github",
     icon: "/crypto-icon.svg",
@@ -78,8 +78,17 @@ export default function Portfolio() {
           transition={{ duration: 0.6 }}
           className="font-serif text-5xl md:text-6xl mb-16 text-center text-hunter-green dark:text-brass"
         >
-          Personal Ventures
+          Selected Work
         </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-center max-w-3xl mx-auto font-sans text-charcoal/70 dark:text-cream/70 mb-12"
+        >
+          A mix of shipped products, experiments, and long-term builds—usually at the intersection of systems, markets, and craft.
+        </motion.p>
 
         {/* Project Cards */}
         <div className="grid md:grid-cols-3 gap-8">
@@ -144,7 +153,7 @@ export default function Portfolio() {
                     </a>
                   ) : (
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-charcoal/20 dark:bg-cream/20 text-charcoal/60 dark:text-cream/60 rounded font-sans text-sm">
-                      {project.linkType === "app" ? "iOS App" : "Coming Soon"}
+                      {project.linkType === "app" ? "iOS App" : "Notes available on request"}
                     </div>
                   )}
                 </div>

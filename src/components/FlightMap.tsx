@@ -193,7 +193,11 @@ function createGeodesicPath(
   return points;
 }
 
-export default function FlightMap() {
+export default function FlightMap({
+  showHeader = true,
+}: {
+  showHeader?: boolean;
+}) {
   const [viewMode, setViewMode] = useState<ViewMode>("dots");
   const [airports, setAirports] = useState<AirportStats[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
@@ -338,27 +342,31 @@ export default function FlightMap() {
   return (
     <section className="py-16 px-4 bg-charcoal dark:bg-cream">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-8"
-        >
-          <h2 className="font-serif text-4xl md:text-5xl text-cream dark:text-brass mb-2">
-            Global Exploration
-          </h2>
-          <p className="font-sans text-cream/70 dark:text-charcoal/70 text-lg">
-            {stats?.totalFlights || 0} flights{" "}
-            <span className="text-brass/60">|</span>{" "}
-            {stats?.uniqueAirports || 0} destinations{" "}
-            <span className="text-brass/60">|</span>{" "}
-            {stats?.uniqueCountries || 0} countries
-          </p>
-          <p className="font-mono text-sm text-cream/50 dark:text-charcoal/50 mt-1 italic">
-            so far...
-          </p>
-        </motion.div>
+        {showHeader && (
+          <>
+            {/* Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-8"
+            >
+              <h2 className="font-serif text-4xl md:text-5xl text-cream dark:text-brass mb-2">
+                Global Exploration
+              </h2>
+              <p className="font-sans text-cream/70 dark:text-charcoal/70 text-lg">
+                {stats?.totalFlights || 0} flights{" "}
+                <span className="text-brass/60">|</span>{" "}
+                {stats?.uniqueAirports || 0} destinations{" "}
+                <span className="text-brass/60">|</span>{" "}
+                {stats?.uniqueCountries || 0} countries
+              </p>
+              <p className="font-mono text-sm text-cream/50 dark:text-charcoal/50 mt-1 italic">
+                so far...
+              </p>
+            </motion.div>
+          </>
+        )}
         
         {/* View Mode Toggle */}
         <div className="flex justify-center gap-2 mb-6">

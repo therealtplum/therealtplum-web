@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import FormattedBrandText from "./FormattedBrandText";
-import FlightMap from "./FlightMap";
+import dynamic from "next/dynamic";
 
 const interests = [
   {
@@ -24,9 +24,9 @@ const interests = [
     ],
   },
   {
-    title: "Hunting & Conservation",
-    description: "Life-long outdoorsman pursuing upland birds (pheasant, quail), turkey, and deer. Active supporter of Pheasants Forever and Ducks Unlimited, balancing the tradition of hunting with conservation stewardship.",
-    details: "Conservationist • PF & DU Member",
+    title: "Field Sports & Conservation",
+    description: "Lifelong outdoorsman and conservation supporter. I care about land stewardship, habitat work, and keeping wild places healthy for the long run.",
+    details: "Stewardship • PF & DU Supporter",
     links: [
       { name: "Pheasants Forever", url: "https://www.pheasantsforever.org" },
       { name: "Ducks Unlimited", url: "https://www.ducks.org" },
@@ -61,6 +61,17 @@ const interests = [
   },
 ];
 
+const PublicTravelMap = dynamic(() => import("./PublicTravelMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full aspect-[2/1] rounded-xl border border-brass/20 bg-cream/5 dark:bg-charcoal/5 flex items-center justify-center">
+      <div className="text-sm font-mono text-cream/60 dark:text-charcoal/60">
+        Loading…
+      </div>
+    </div>
+  ),
+});
+
 export default function PersonalInterests() {
   return (
     <section
@@ -75,7 +86,7 @@ export default function PersonalInterests() {
           transition={{ duration: 0.6 }}
           className="font-serif text-5xl md:text-6xl mb-4 text-center text-cream dark:text-brass"
         >
-          The Gentleman&apos;s Workshop
+          Curiosities (Analog + Digital)
         </motion.h2>
         <motion.p
           initial={{ opacity: 0 }}
@@ -84,12 +95,13 @@ export default function PersonalInterests() {
           transition={{ delay: 0.2, duration: 0.6 }}
           className="text-center text-cream/80 dark:text-charcoal/80 font-sans text-lg mb-8"
         >
-          Where analog meets digital
+          Fuel for the work: craft, competition, and a little wanderlust.
         </motion.p>
       </div>
-      
-      {/* Full-width Flight Map */}
-      <FlightMap />
+
+      <div className="max-w-7xl mx-auto px-6 mt-10">
+        <PublicTravelMap />
+      </div>
       
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
@@ -142,7 +154,7 @@ export default function PersonalInterests() {
 
         {/* Bio Section */}
         <motion.div
-          id="about-me"
+          id="bio"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -171,10 +183,10 @@ export default function PersonalInterests() {
               About Me
             </h3>
             <p className="font-sans text-cream/90 dark:text-charcoal/90 leading-relaxed text-lg">
-              I'm Thomas Plummer. I build businesses and work in high-frequency trading and finance, with a focus on precision, systems, and disciplined execution.
+              I'm Thomas Plummer. I build in high-stakes environments—markets, software, and operations—where speed matters and correctness matters.
             </p>
             <p className="font-sans text-cream/80 dark:text-charcoal/80 leading-relaxed mt-4">
-              My professional interests span trading, private investments, oil and gas rights, and corporate real estate. I'm particularly drawn to opportunities where structure, incentives, and long-term fundamentals matter. More on my investment work can be found at{" "}
+              I’m drawn to opportunities where structure, incentives, and long-horizon fundamentals matter. I like crisp problem statements, fast iteration, and teams that take pride in craft. More on my investment work can be found at{" "}
               <a
                 href="https://snowbirdcap.com"
                 target="_blank"
@@ -186,7 +198,7 @@ export default function PersonalInterests() {
               .
             </p>
             <p className="font-sans text-cream/80 dark:text-charcoal/80 leading-relaxed mt-4">
-              Outside of work, you might find me racing sailboats, exploring new wines, or spending time in the field during hunting season. I'm a University of Kansas graduate and lifelong Jayhawks fan. I'm naturally curious, always learning, and usually building something—whether it's software, an investment thesis, or a new venture.
+              Outside of work, you’ll find me racing sailboats, exploring wine, or getting outside. I’m a University of Kansas graduate and lifelong Jayhawks fan. I’m usually building something—software, a research thread, or a new venture.
             </p>
           </div>
         </motion.div>

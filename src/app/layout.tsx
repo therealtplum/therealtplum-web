@@ -25,8 +25,43 @@ const canela = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "therealtplum | Thomas Plummer",
-  description: "Who is therealtplum? Explore the work, interests, and curiosities of Thomas Plummer.",
+  metadataBase: new URL("https://therealtplum.com"),
+  title: {
+    default: "therealtplum | Thomas Plummer",
+    template: "%s | therealtplum",
+  },
+  description:
+    "Thomas Plummer — strategy and market-structure work with a builder’s mindset: shipping, systems thinking, and disciplined execution.",
+  applicationName: "therealtplum",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "therealtplum",
+    title: "therealtplum | Thomas Plummer",
+    description:
+      "Thomas Plummer — strategy and market-structure work with a builder’s mindset: shipping, systems thinking, and disciplined execution.",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "therealtplum | Thomas Plummer",
+    description:
+      "Thomas Plummer — strategy and market-structure work with a builder’s mindset: shipping, systems thinking, and disciplined execution.",
+  },
 };
 
 export default function RootLayout({
@@ -39,9 +74,15 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} ${canela.variable} font-sans`}
       >
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-cream focus:px-4 focus:py-2 focus:font-sans focus:text-charcoal focus:shadow-lg dark:focus:bg-charcoal dark:focus:text-cream"
+        >
+          Skip to content
+        </a>
         <Navigation />
         <DarkModeToggle />
-        {children}
+        <div id="main">{children}</div>
       </body>
     </html>
   );

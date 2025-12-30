@@ -9,12 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "hunter-green": "#2D3E2B",
-        navy: "#1B2A4A",
-        brass: "#B8860B",
-        cream: "#F5F5DC",
-        charcoal: "#36454F",
-        "electric-blue": "#00FFFF",
+        // Theme colors are driven by CSS variables so light/dark modes can
+        // feel meaningfully different without rewriting component classNames.
+        "hunter-green": "rgb(var(--color-hunter-green) / <alpha-value>)",
+        navy: "rgb(var(--color-navy) / <alpha-value>)",
+        brass: "rgb(var(--color-brass) / <alpha-value>)",
+        cream: "rgb(var(--color-cream) / <alpha-value>)",
+        charcoal: "rgb(var(--color-charcoal) / <alpha-value>)",
+        "electric-blue": "rgb(var(--color-electric-blue) / <alpha-value>)",
       },
       fontFamily: {
         serif: ["var(--font-canela)", "serif"],

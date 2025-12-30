@@ -1,21 +1,24 @@
-"use client";
+import type { Metadata } from "next";
+import TravelClientShell from "./travel-client-shell";
 
-import { useEffect } from "react";
-import { registerServiceWorker } from "@/lib/service-worker";
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 export default function TravelLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    registerServiceWorker();
-  }, []);
-
   return (
-    <div className="min-h-screen bg-cream dark:bg-charcoal">
-      {children}
-    </div>
+    <TravelClientShell>{children}</TravelClientShell>
   );
 }
 

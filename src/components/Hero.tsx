@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Typewriter from "./Typewriter";
-import BrandLogo from "./BrandLogo";
 import FormattedBrandText from "./FormattedBrandText";
 
 export default function Hero() {
@@ -33,12 +31,12 @@ export default function Hero() {
         {showReveal && (
           <div className="animate-fade-in mt-8 space-y-4">
             <p className="font-sans text-xl md:text-2xl text-cream/90 leading-relaxed">
-              I'm a <span className="text-brass">business-builder</span> who believes in{" "}
-              <span className="text-brass/90">refined ingenuity</span> — 
-              where classic craftsmanship meets modern innovation.
+              I build <span className="text-brass">products</span> and{" "}
+              <span className="text-brass">systems</span> for complex domains—where
+              clarity, reliability, and speed all matter.
             </p>
-            <p className="font-serif text-lg md:text-xl text-cream/70 italic mt-6">
-              "A thing is a thing, not what is said of that thing."
+            <p className="font-mono text-sm md:text-base text-cream/70 mt-3">
+              Tight feedback loops. Clean interfaces. Thoughtful shipping.
             </p>
           </div>
         )}

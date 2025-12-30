@@ -7,6 +7,24 @@
     --font-canela: "Canela", serif;
     --font-inter: "Inter", sans-serif;
     --font-mono: "JetBrains Mono", monospace;
+
+    /* Light mode palette (warm, paper-like) */
+    --color-cream: 250 248 240;        /* warmer + lighter than #F5F5DC */
+    --color-charcoal: 44 54 63;        /* slightly deeper for contrast */
+    --color-hunter-green: 38 58 44;    /* richer green */
+    --color-navy: 24 38 66;            /* slightly deeper navy */
+    --color-brass: 176 124 24;         /* less neon, more "metal" */
+    --color-electric-blue: 0 255 255;  /* unchanged */
+  }
+
+  /* Dark mode palette (inky, higher contrast, slightly cooler) */
+  .dark {
+    --color-cream: 236 232 222;        /* softer off-white */
+    --color-charcoal: 10 14 19;        /* near-black ink */
+    --color-hunter-green: 18 44 34;    /* deep forest */
+    --color-navy: 12 22 44;            /* midnight */
+    --color-brass: 214 170 74;         /* warmer glow against dark */
+    --color-electric-blue: 0 255 255;
   }
 
   html {

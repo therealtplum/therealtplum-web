@@ -7,7 +7,7 @@ import BrandLogo from "./BrandLogo";
 import ContactEmail from "./ContactEmail";
 
 const navItems = [
-  { label: "About", href: "#about-me" },
+  { label: "About", href: "#signal" },
   // Craft nav item is temporarily commented out - uncomment to restore when Craft section is added back
   // { label: "Craft", href: "#craft" },
   { label: "Ventures", href: "#code" },
@@ -18,13 +18,11 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-
-  // Hide navigation on travel routes
-  if (pathname?.startsWith("/travel")) {
-    return null;
-  }
+  const mobileMenuId = "main-nav-mobile-menu";
+  const hideNav = pathname?.startsWith("/travel") ?? false;
 
   useEffect(() => {
+    if (hideNav) return;
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
       // Close mobile menu on scroll
@@ -32,7 +30,7 @@ export default function Navigation() {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [hideNav]);
 
   // Close mobile menu when clicking on a link
   const handleLinkClick = () => {
@@ -41,6 +39,7 @@ export default function Navigation() {
 
   // Close mobile menu when clicking outside
   useEffect(() => {
+    if (hideNav) return;
     if (!mobileMenuOpen) return;
     
     const handleClickOutside = (event: MouseEvent) => {
@@ -52,7 +51,12 @@ export default function Navigation() {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [mobileMenuOpen]);
+  }, [hideNav, mobileMenuOpen]);
+
+  // Hide navigation on travel routes (render only — hooks still run)
+  if (hideNav) {
+    return null;
+  }
 
   return (
     <nav
@@ -61,6 +65,7 @@ export default function Navigation() {
           ? "bg-cream/95 dark:bg-charcoal/95 backdrop-blur-sm shadow-sm"
           : "bg-transparent"
       }`}
+      aria-label="Primary"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
@@ -103,12 +108,15 @@ export default function Navigation() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            type="button"
             className={`md:hidden p-2 transition-colors ${
               scrolled
                 ? "text-charcoal dark:text-cream hover:text-brass"
                 : "text-cream hover:text-brass"
             }`}
             aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls={mobileMenuId}
           >
             <svg
               className="w-6 h-6"
@@ -130,6 +138,7 @@ export default function Navigation() {
 
         {/* Mobile Menu */}
         <div
+          id={mobileMenuId}
           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
             mobileMenuOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
           }`}

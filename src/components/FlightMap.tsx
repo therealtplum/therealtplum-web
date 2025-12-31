@@ -14,7 +14,6 @@ import {
   airportCoordinates,
   calculateAirportStats,
   calculateRoutes,
-  getFlightStats,
   type AirportStats,
   type Route,
 } from "@/lib/flight-data";
@@ -201,7 +200,6 @@ export default function FlightMap({
   const [viewMode, setViewMode] = useState<ViewMode>("dots");
   const [airports, setAirports] = useState<AirportStats[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
-  const [stats, setStats] = useState<ReturnType<typeof getFlightStats> | null>(null);
   const [animationIndex, setAnimationIndex] = useState(0);
   const [selectedAirport, setSelectedAirport] = useState<AirportStats | null>(null);
   const [animatedPaths, setAnimatedPaths] = useState<Set<string>>(new Set());
@@ -215,7 +213,6 @@ export default function FlightMap({
   useEffect(() => {
     setAirports(calculateAirportStats());
     setRoutes(calculateRoutes());
-    setStats(getFlightStats());
   }, []);
   
   // Animation logic for animated mode
@@ -508,10 +505,10 @@ export default function FlightMap({
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           {[
-            { label: "Total Flights", value: stats?.totalFlights || 0 },
-            { label: "Airports", value: stats?.uniqueAirports || 0 },
-            { label: "Countries", value: stats?.uniqueCountries || 0 },
-            { label: "Aircraft Types", value: stats?.uniqueAircraftTypes || 0 },
+            { label: "Total Flights", value: "350+" },
+            { label: "Airports", value: "60+" },
+            { label: "Countries", value: "26" },
+            { label: "Aircraft Types", value: "30+" },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}

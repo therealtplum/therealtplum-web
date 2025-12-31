@@ -1,19 +1,18 @@
 import Hero from "@/components/Hero";
-import ProfessionalBackground from "@/components/ProfessionalBackground";
-// Craft section is temporarily commented out
-// To restore: uncomment the import below and the <Craft /> component in the JSX
-// import Craft from "@/components/Craft";
+import AboutMe from "@/components/AboutMe";
 import Portfolio from "@/components/Portfolio";
 import PersonalInterests from "@/components/PersonalInterests";
+import ProfessionalBackground from "@/components/ProfessionalBackground";
 import ContactEmail from "@/components/ContactEmail";
 
 export default function HomePage() {
   return (
     <main className="relative">
       <Hero />
-      <ProfessionalBackground />
+      <AboutMe />
       <Portfolio />
       <PersonalInterests />
+      <ProfessionalBackground />
       
       {/* Footer */}
       <footer className="py-12 px-6 bg-charcoal dark:bg-cream text-center">

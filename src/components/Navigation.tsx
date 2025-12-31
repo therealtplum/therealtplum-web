@@ -7,11 +7,10 @@ import BrandLogo from "./BrandLogo";
 import ContactEmail from "./ContactEmail";
 
 const navItems = [
-  { label: "About", href: "#obsessions" },
-  // Craft nav item is temporarily commented out - uncomment to restore when Craft section is added back
-  // { label: "Craft", href: "#craft" },
+  { label: "About", href: "#about" },
   { label: "Ventures", href: "#code" },
   { label: "Curiosities", href: "#curiosities" },
+  { label: "Obsessions", href: "#obsessions" },
 ];
 
 export default function Navigation() {

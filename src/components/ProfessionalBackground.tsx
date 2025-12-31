@@ -1,30 +1,37 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const obsessions = [
-  "High-Frequency Trading",
-  "Private Investments",
-  "Oil & Gas Rights",
-  "Corporate Real Estate",
-  "System Architecture",
-  "Data Engineering",
-  "Rust",
-  "LLM",
-  "Prediction Markets",
-  "Emerging Markets",
-  "Crypto",
-  "Human-AI Collaboration",
-  "Autonomous Systems",
-  "Energy Innovation",
-  "Biotech & Longevity",
-  "Sports Strategy",
-  "Travel Optimization",
+// Pre-computed random positions for consistent layout (seeded positions)
+// Format: { x: -1 to 1, y: -1 to 1 } relative to container center
+const obsessionPositions = [
+  { label: "High-Frequency Trading", x: 0.55, y: -0.75 },
+  { label: "Private Investments", x: 0.65, y: 0.3 },
+  { label: "Oil & Gas Rights", x: 0.7, y: 0.55 },
+  { label: "Corporate Real Estate", x: 0.45, y: 0.8 },
+  { label: "System Architecture", x: 0.1, y: 0.7 },
+  { label: "Data Engineering", x: -0.2, y: 0.55 },
+  { label: "Rust", x: -0.5, y: 0.7 },
+  { label: "LLM", x: -0.7, y: 0.45 },
+  { label: "Prediction Markets", x: -0.75, y: 0.1 },
+  { label: "Emerging Markets", x: -0.7, y: -0.2 },
+  { label: "Crypto", x: -0.55, y: -0.5 },
+  { label: "Human-AI Collaboration", x: -0.3, y: -0.7 },
+  { label: "Autonomous Systems", x: 0.0, y: -0.55 },
+  { label: "Energy Innovation", x: 0.25, y: -0.4 },
+  { label: "Biotech & Longevity", x: 0.5, y: -0.5 },
+  { label: "Sports Strategy", x: 0.7, y: -0.25 },
+  { label: "Travel Optimization", x: 0.55, y: 0.05 },
 ];
 
 export default function ProfessionalBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -140,37 +147,40 @@ export default function ProfessionalBackground() {
             transition={{ duration: 0.8 }}
             className="relative z-10"
           >
-            <div className="relative h-[32rem] md:h-[36rem]">
-              {obsessions.map((obsession, index) => {
-                const angle = (index * 2 * Math.PI) / obsessions.length;
-                const radius = 160;
-                const baseX = Math.cos(angle) * radius;
-                const baseY = Math.sin(angle) * radius;
+            <div className="relative h-[32rem] md:h-[40rem]">
+              {mounted && obsessionPositions.map((item, index) => {
+                // Convert -1 to 1 range to pixel positions
+                // Spread across ~85% of container width/height
+                const baseX = item.x * 320;
+                const baseY = item.y * 220;
+                // Random-ish drift amount based on position
+                const driftX = 15 + Math.abs(item.x) * 20;
+                const driftY = 10 + Math.abs(item.y) * 15;
 
                 return (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 1, scale: 1, x: baseX, y: baseY }}
+                    initial={{ opacity: 0, scale: 0.8 }}
                     animate={{
-                      x: [baseX, baseX * 1.15, baseX],
-                      y: [baseY, baseY * 1.15, baseY],
+                      opacity: 1,
+                      scale: 1,
+                      x: [baseX - driftX, baseX + driftX, baseX - driftX],
+                      y: [baseY - driftY, baseY + driftY, baseY - driftY],
                     }}
                     transition={{
-                      duration: 4 + index * 0.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
+                      opacity: { duration: 0.4, delay: index * 0.03 },
+                      scale: { duration: 0.4, delay: index * 0.03 },
+                      x: { duration: 6 + (index % 5) * 1.5, repeat: Infinity, ease: "easeInOut" },
+                      y: { duration: 5 + (index % 4) * 1.2, repeat: Infinity, ease: "easeInOut" },
                     }}
                     className="absolute top-1/2 left-1/2"
-                    style={{
-                      transform: "translate(-50%, -50%)",
-                    }}
                   >
                     <motion.div
                       whileHover={{ scale: 1.1, zIndex: 20 }}
                       className="group relative bg-gradient-to-br from-brass/30 to-brass/10 dark:from-brass/20 dark:to-brass/10 backdrop-blur-md px-5 py-3 rounded-lg border-2 border-brass/60 dark:border-brass/60 shadow-lg shadow-brass/20 dark:shadow-brass/10 hover:shadow-xl hover:shadow-brass/30 dark:hover:shadow-brass/20 transition-all duration-300"
                     >
                       <span className="font-sans text-sm font-medium text-charcoal dark:text-cream whitespace-nowrap relative z-10">
-                        {obsession}
+                        {item.label}
                       </span>
                       {/* Subtle glow effect on hover */}
                       <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-brass/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

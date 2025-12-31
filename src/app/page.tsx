@@ -12,8 +12,6 @@ export default function HomePage() {
     <main className="relative">
       <Hero />
       <ProfessionalBackground />
-      {/* Craft section is temporarily commented out - uncomment to restore */}
-      {/* <Craft /> */}
       <Portfolio />
       <PersonalInterests />
       

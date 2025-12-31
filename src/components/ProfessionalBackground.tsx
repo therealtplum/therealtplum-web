@@ -150,9 +150,7 @@ export default function ProfessionalBackground() {
                 return (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
+                    initial={{ opacity: 1, scale: 1, x: baseX, y: baseY }}
                     animate={{
                       x: [baseX, baseX * 1.15, baseX],
                       y: [baseY, baseY * 1.15, baseY],
@@ -161,7 +159,6 @@ export default function ProfessionalBackground() {
                       duration: 4 + index * 0.5,
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: index * 0.3,
                     }}
                     className="absolute top-1/2 left-1/2"
                     style={{

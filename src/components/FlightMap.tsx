@@ -355,11 +355,8 @@ export default function FlightMap({
                 Global Exploration
               </h2>
               <p className="font-sans text-cream/70 dark:text-charcoal/70 text-lg">
-                {stats?.totalFlights || 0} flights{" "}
-                <span className="text-brass/60">|</span>{" "}
-                {stats?.uniqueAirports || 0} destinations{" "}
-                <span className="text-brass/60">|</span>{" "}
-                {stats?.uniqueCountries || 0} countries
+                350+ flights <span className="text-brass/60">|</span> 60+
+                airports <span className="text-brass/60">|</span> 26 countries
               </p>
               <p className="font-mono text-sm text-cream/50 dark:text-charcoal/50 mt-1 italic">
                 so far...

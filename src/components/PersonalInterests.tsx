@@ -198,7 +198,7 @@ export default function PersonalInterests() {
               .
             </p>
             <p className="font-sans text-cream/80 dark:text-charcoal/80 leading-relaxed mt-4">
-              Outside of work, you’ll find me racing sailboats, exploring wine, or getting outside. I’m a University of Kansas graduate and lifelong Jayhawks fan. I’m usually building something—software, a research thread, or a new venture.
+              I’m usually building something — software, a research thread, or a new venture.
             </p>
           </div>
         </motion.div>

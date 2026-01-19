@@ -9,7 +9,7 @@ export function getJapan2026Trip(): Trip {
   return {
     id: "japan2026",
     name: "Japan Adventure",
-    version: "1.6",
+    version: "1.7",
     startDate: "2026-03-27T00:00:00Z",
     endDate: "2026-04-12T23:59:59Z",
     baseTimezone: "Asia/Tokyo",
@@ -488,10 +488,28 @@ export function getJapan2026Trip(): Trip {
         description: "Early morning. Full hike ~2 hrs",
       },
       {
+        id: "e-fushimi-sake",
+        type: "attraction",
+        title: "Fushimi Sake Brewery District",
+        startTime: "2026-04-05T02:30:00Z",
+        endTime: "2026-04-05T04:30:00Z",
+        location: {
+          id: "fushimi-sake",
+          name: "Gekkeikan Okura Sake Museum",
+          city: "Kyoto",
+          country: "Japan",
+          timezone: "Asia/Tokyo",
+          address: "247 Minamihamacho, Fushimi Ward, Kyoto 612-8043",
+          lat: 34.9276,
+          lng: 135.7608,
+        },
+        description: "Fushimi is one of Japan's most famous sake-producing regions. Tour brewery museum, learn sake-making process, tasting included. Perfect after Fushimi Inari hike - same neighborhood! ¥600 entrance.",
+      },
+      {
         id: "e-nijo-castle",
         type: "attraction",
         title: "Nijo Castle",
-        startTime: "2026-04-05T03:00:00Z",
+        startTime: "2026-04-05T05:00:00Z",
         locationId: "kyoto",
       },
       {
@@ -747,10 +765,13 @@ export function getJapan2026Trip(): Trip {
         id: "b-flight-in",
         type: "flight",
         title: "UA 881: ORD → HND",
-        confirmationCode: "UA881",
+        confirmationCode: "IWHJPQ (Tom) / IWBRZ5 (Courtney)",
         provider: "United Airlines",
         startDate: "2026-03-27T12:00:00Z",
         locationId: "tokyo",
+        details: {
+          note: "Tom: IWHJPQ | Courtney: IWBRZ5",
+        },
         attachments: [
           {
             id: "a-flight-in",
@@ -764,10 +785,13 @@ export function getJapan2026Trip(): Trip {
         id: "b-flight-out",
         type: "flight",
         title: "UA 882: HND → ORD",
-        confirmationCode: "UA882",
+        confirmationCode: "IWHJPQ (Tom) / IWBRZ5 (Courtney)",
         provider: "United Airlines",
         startDate: "2026-04-12T08:15:00Z",
         locationId: "tokyo",
+        details: {
+          note: "Tom: IWHJPQ | Courtney: IWBRZ5",
+        },
         attachments: [
           {
             id: "a-flight-out",

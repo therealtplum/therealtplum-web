@@ -748,7 +748,7 @@ export function getJapan2026Trip(): Trip {
       {
         id: "p-teamlab",
         title: "teamLab Planets TOKYO Tickets",
-        status: "booked",
+        status: "purchased",
         dueDate: "2026-03-30T01:00:00Z",
         description: "2 adult tickets, 10:00-10:30 JST admission. Inquiry #: fe595696d949caed89",
         links: ["https://planets.teamlab.art/"],

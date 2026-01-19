@@ -9,7 +9,7 @@ export function getJapan2026Trip(): Trip {
   return {
     id: "japan2026",
     name: "Japan Adventure",
-    version: "1.2",
+    version: "1.3",
     startDate: "2026-03-27T00:00:00Z",
     endDate: "2026-04-12T23:59:59Z",
     baseTimezone: "Asia/Tokyo",
@@ -157,10 +157,11 @@ export function getJapan2026Trip(): Trip {
       {
         id: "e-teamlab",
         type: "attraction",
-        title: "teamLab Planets",
-        startTime: "2026-03-30T04:00:00Z",
+        title: "teamLab Planets TOKYO",
+        startTime: "2026-03-30T01:00:00Z", // 10:00 AM JST
+        endTime: "2026-03-30T01:30:00Z", // 10:30 AM JST admission window
         locationId: "tokyo",
-        description: "Pre-booked",
+        description: "Entrance Pass for 2 adults. Admission window 10:00-10:30 (may wait 30 min). Inquiry #: fe595696d949caed89",
       },
       {
         id: "e-roppongi",
@@ -746,10 +747,10 @@ export function getJapan2026Trip(): Trip {
       },
       {
         id: "p-teamlab",
-        title: "teamLab Planets Tickets",
-        status: "needed",
-        dueDate: "2026-03-30T00:00:00Z",
-        description: "Pre-book for Mar 30",
+        title: "teamLab Planets TOKYO Tickets",
+        status: "booked",
+        dueDate: "2026-03-30T01:00:00Z",
+        description: "2 adult tickets, 10:00-10:30 JST admission. Inquiry #: fe595696d949caed89",
         links: ["https://planets.teamlab.art/"],
       },
       {

@@ -238,37 +238,36 @@ export default function TripHeader({ trip }: TripHeaderProps) {
         </div>
 
         {/* Hamburger Menu */}
-        <div className="relative">
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
-            aria-label="Menu"
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+          aria-label="Menu"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {menuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+            {menuOpen ? (
+              <path d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
 
-          {/* Dropdown Menu */}
-          {menuOpen && (
-            <>
-              <div
-                className="fixed inset-0 z-[100] bg-black/20"
-                onClick={() => setMenuOpen(false)}
-              />
-              <nav className="absolute right-0 top-full mt-2 w-64 bg-cream dark:bg-charcoal rounded-lg shadow-xl border border-charcoal/10 dark:border-cream/10 z-[110] max-h-[80vh] overflow-y-auto">
+        {/* Dropdown Menu */}
+        {menuOpen && (
+          <>
+            <div
+              className="fixed inset-0 z-[100] bg-black/20"
+              onClick={() => setMenuOpen(false)}
+            />
+            <nav className="fixed top-16 right-4 w-64 bg-cream dark:bg-charcoal rounded-lg shadow-xl border border-charcoal/10 dark:border-cream/10 z-[110] max-h-[80vh] overflow-y-auto">
                 <div className="p-2">
                   {navItems.map((item) => (
                     <div key={item.href}>
@@ -344,7 +343,6 @@ export default function TripHeader({ trip }: TripHeaderProps) {
               </nav>
             </>
           )}
-        </div>
       </div>
     </header>
   );

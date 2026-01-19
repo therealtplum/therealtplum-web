@@ -9,7 +9,7 @@ export function getJapan2026Trip(): Trip {
   return {
     id: "japan2026",
     name: "Japan Adventure",
-    version: "1.4",
+    version: "1.5",
     startDate: "2026-03-27T00:00:00Z",
     endDate: "2026-04-12T23:59:59Z",
     baseTimezone: "Asia/Tokyo",
@@ -271,10 +271,10 @@ export function getJapan2026Trip(): Trip {
       {
         id: "e-onsen-yamagata",
         type: "attraction",
-        title: "Optional Onsen Soak",
+        title: "Onsen at Ryokan",
         startTime: "2026-03-31T06:00:00Z",
         locationId: "yamagata",
-        description: "Tattoo-friendly options available",
+        description: "Relax at the ryokan's hot springs after arrival",
       },
       // Day 5 - Apr 1: Yamagata
       {
@@ -304,12 +304,30 @@ export function getJapan2026Trip(): Trip {
         description: "~1,000 stone steps. Slow, scenic, very doable. Mountain views, temples, forest air. Courtney's dream hike!",
       },
       {
+        id: "e-zao-dai-rotenburo",
+        type: "attraction",
+        title: "Zao Onsen Dai Rotenburo",
+        startTime: "2026-04-01T04:30:00Z",
+        endTime: "2026-04-01T05:30:00Z",
+        location: {
+          id: "zao-dai-rotenburo",
+          name: "Zao Onsen Dai Rotenburo",
+          city: "Yamagata",
+          country: "Japan",
+          timezone: "Asia/Tokyo",
+          address: "853-3 Zaoonsen, Yamagata 990-2301",
+          lat: 38.1428,
+          lng: 140.4394,
+        },
+        description: "Large outdoor mixed-gender bath. Tattoo-friendly. ¥550 entrance. Stunning mountain views. Note: Closes Nov-Apr (check seasonal hours)",
+      },
+      {
         id: "e-soba-yamagata",
         type: "meal",
         title: "Local Soba",
-        startTime: "2026-04-01T05:00:00Z",
+        startTime: "2026-04-01T05:30:00Z",
         locationId: "yamagata",
-        description: "Yamagata specialty",
+        description: "Yamagata specialty near Yamadera",
       },
       // Day 6 - Apr 2: Yamagata → Kanazawa
       {

@@ -53,9 +53,21 @@ export default function EventCard({ event, location, onClick }: EventCardProps) 
           </div>
           <h3 className="font-semibold text-lg mb-1">{event.title}</h3>
           {location && (
-            <p className="text-sm text-charcoal/60 dark:text-cream/60">
-              {location.name}
-            </p>
+            <div className="text-sm text-charcoal/60 dark:text-cream/60">
+              <p>{location.name}</p>
+              {location.address && location.lat && location.lng && (
+                <a
+                  href={`https://maps.google.com/?q=${location.lat},${location.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-blue-600 dark:text-blue-400 hover:underline text-xs flex items-center gap-1 mt-1"
+                >
+                  <span>📍</span>
+                  <span>{location.address}</span>
+                </a>
+              )}
+            </div>
           )}
           {isLogisticsEvent && (
             <div className="mt-2 space-y-1">

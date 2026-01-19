@@ -651,22 +651,34 @@ export function getJapan2026Trip(): Trip {
       {
         id: "b-tokyo-hotel-1",
         type: "hotel",
-        title: "Tokyo Hotel (Shinjuku/Ginza)",
-        confirmationCode: "TBD",
-        provider: "TBD",
-        startDate: "2026-03-28T10:00:00Z",
-        endDate: "2026-03-31T11:00:00Z",
+        title: "BELLUSTAR TOKYO, A Pan Pacific Hotel",
+        confirmationCode: "ZO-AX1027-86649",
+        provider: "Amex Travel",
+        startDate: "2026-03-28T07:00:00Z", // 3:00 PM JST
+        endDate: "2026-03-31T03:00:00Z", // 12:00 PM JST
         locationId: "tokyo",
+        details: {
+          address: "Kabukicho 1-29-1, Shinjuku, Tokyo",
+          room: "1 King Bed",
+          note: "Booked via Amex Travel",
+        },
       },
       {
         id: "b-yamagata-hotel",
         type: "hotel",
-        title: "Yamagata Hotel",
-        confirmationCode: "TBD",
-        provider: "TBD",
+        title: "Takamiya Ryokan Miyamaso",
+        confirmationCode: "2443691778390585037",
+        provider: "Booking.com",
         startDate: "2026-03-31T04:30:00Z",
         endDate: "2026-04-02T11:00:00Z",
         locationId: "yamagata",
+        details: {
+          address: "Zao Onsen 54, Yamagata 990-2301",
+          room: "Superior Twin Room with Tatami Area - Non-Smoking",
+          phone: "+81 23-694-9333",
+          pinCode: "043272",
+          note: "Traditional ryokan in Zao Onsen - hot springs included",
+        },
       },
       {
         id: "b-kanazawa-hotel",

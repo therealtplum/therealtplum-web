@@ -122,8 +122,17 @@ export async function createTravelerVercel(
 export async function initializeDemoDataVercel(): Promise<void> {
   await initVercelDB();
   
+  // Get trip data from seed data
+  const { getJapan2026Trip } = await import("./trip-seed-data");
+  const trip = getJapan2026Trip();
+  
   // Check if trip already exists
   const existingTrip = await getTripVercel("japan2026");
+  
+  // Always update trip if version has changed or it's newer
+  if (!existingTrip || existingTrip.version !== trip.version) {
+    await saveTripVercel(trip);
+  }
   
   // Check if travelers exist by querying directly
   let hasTom = false;
@@ -140,18 +149,12 @@ export async function initializeDemoDataVercel(): Promise<void> {
     // Table might not exist yet, that's fine
   }
   
-  if (existingTrip && hasTom && hasCourtney) {
-    // Everything already exists
-    return;
+  // Create travelers if they don't exist
+  if (!hasTom) {
+    await createTravelerVercel("japan2026", "tom", "password123", "Tom", "traveler");
   }
-
-  // Get trip data from seed data
-  const { getJapan2026Trip } = await import("./trip-seed-data");
-  const trip = getJapan2026Trip();
-  await saveTripVercel(trip);
-  
-  // Create travelers
-  await createTravelerVercel("japan2026", "tom", "password123", "Tom", "traveler");
-  await createTravelerVercel("japan2026", "courtney", "password123", "Courtney", "traveler");
+  if (!hasCourtney) {
+    await createTravelerVercel("japan2026", "courtney", "password123", "Courtney", "traveler");
+  }
 }
 

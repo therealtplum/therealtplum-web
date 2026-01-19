@@ -9,7 +9,7 @@ export function getJapan2026Trip(): Trip {
   return {
     id: "japan2026",
     name: "Japan Adventure",
-    version: "1.0",
+    version: "1.1",
     startDate: "2026-03-27T00:00:00Z",
     endDate: "2026-04-12T23:59:59Z",
     baseTimezone: "Asia/Tokyo",

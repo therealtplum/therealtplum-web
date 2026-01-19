@@ -9,7 +9,7 @@ export function getJapan2026Trip(): Trip {
   return {
     id: "japan2026",
     name: "Japan Adventure",
-    version: "1.1",
+    version: "1.2",
     startDate: "2026-03-27T00:00:00Z",
     endDate: "2026-04-12T23:59:59Z",
     baseTimezone: "Asia/Tokyo",
@@ -100,10 +100,10 @@ export function getJapan2026Trip(): Trip {
       {
         id: "e-tokyo-checkin-1",
         type: "hotel",
-        title: "Check-in: Tokyo Hotel",
-        startTime: "2026-03-28T10:00:00Z",
+        title: "Check-in: BELLUSTAR TOKYO, A Pan Pacific Hotel",
+        startTime: "2026-03-28T07:00:00Z", // 3:00 PM JST
         locationId: "tokyo",
-        description: "Shinjuku or Ginza area",
+        description: "Kabukicho 1-29-1, Shinjuku | 1 King Bed | Conf: ZO-AX1027-86649",
       },
       {
         id: "e-dinner-1",
@@ -199,9 +199,10 @@ export function getJapan2026Trip(): Trip {
       {
         id: "e-yamagata-checkin",
         type: "hotel",
-        title: "Check-in: Yamagata",
+        title: "Check-in: Takamiya Ryokan Miyamaso",
         startTime: "2026-03-31T04:30:00Z",
         locationId: "yamagata",
+        description: "Zao Onsen 54, Yamagata | Superior Twin Room with Tatami | Conf: 2443691778390585037 | PIN: 043272 | ☎️ +81 23-694-9333",
       },
       {
         id: "e-onsen-yamagata",

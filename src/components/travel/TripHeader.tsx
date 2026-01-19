@@ -93,7 +93,7 @@ export default function TripHeader({ trip }: TripHeaderProps) {
 
   return (
     <header
-      className={`sticky top-0 z-[60] bg-gradient-to-r ${theme.primary} text-white shadow-lg relative overflow-hidden`}
+      className={`sticky top-0 z-50 bg-gradient-to-r ${theme.primary} text-white shadow-lg relative overflow-hidden`}
     >
       {/* Cherry Blossom Background Pattern - Only for Japan trips */}
       {trip.id === "japan2026" && (
@@ -265,10 +265,10 @@ export default function TripHeader({ trip }: TripHeaderProps) {
           {menuOpen && (
             <>
               <div
-                className="fixed inset-0 z-[55] bg-black/20"
+                className="fixed inset-0 z-[100] bg-black/20"
                 onClick={() => setMenuOpen(false)}
               />
-              <nav className="absolute right-0 top-full mt-2 w-64 bg-cream dark:bg-charcoal rounded-lg shadow-xl border border-charcoal/10 dark:border-cream/10 z-[60] max-h-[80vh] overflow-y-auto">
+              <nav className="absolute right-0 top-full mt-2 w-64 bg-cream dark:bg-charcoal rounded-lg shadow-xl border border-charcoal/10 dark:border-cream/10 z-[110] max-h-[80vh] overflow-y-auto">
                 <div className="p-2">
                   {navItems.map((item) => (
                     <div key={item.href}>
